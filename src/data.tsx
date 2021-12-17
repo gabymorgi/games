@@ -1,4 +1,4 @@
-enum GameTag {
+export enum GameTag {
     Action,
     Board,
     Collectathon,
@@ -9,7 +9,7 @@ enum GameTag {
     Metroidvania,
     MuchoTexto,
     Platformer,
-    Presition,
+    Precision,
     Programing,
     PointAndClick,
     Puzzles,
@@ -19,7 +19,18 @@ enum GameTag {
     TowerDefense,
     TurnBased,
 }
-enum GameState { Banned, Abandoned, Playing, Won, Completed, Achievements }
+export enum GameState { Banned, Abandoned, Playing, Won, Completed, Achievements }
+
+export interface ScoreI {
+    content?: number
+    lore?: number
+    mechanics?: number
+    bosses?: number
+    controls?: number
+    music?: number
+    graphics?: number
+    extra?: Array<{ bias: number; info: string }>
+}
 
 export const data: Array<{
     name: string
@@ -30,25 +41,24 @@ export const data: Array<{
     hours?: number
     achievements?: [number, number]
     recomended?: 'positive' | 'negative' | 'neutral'
-    score?: {
-        content?: number
-        lore?: number
-        mechanics?: number
-        bosses?: number
-        controls?: number
-        music?: number
-        graphics?: number
-        extra?: Array<{ bias: number; info: string }>
-    }
+    score?: ScoreI
 }> = [
     {
-        name: "Mill & Greg",
+        name: "Press any button",
+        start: "2021-12-17",
+        end: "2021-12-17",
+        hours: 1.3,
+        achievements: [5, 5],
+        state: GameState.Achievements,
+        tags: [GameTag.MuchoTexto],
+    }, {
+        name: "Milli & Greg",
         start: "2021-12-16",
         hours: 0.1,
         achievements: [2, 13],
         state: GameState.Playing,
-        tags: [GameTag.Presition, GameTag.Platformer],
-    },{
+        tags: [GameTag.Precision, GameTag.Platformer],
+    }, {
         name: "Neon abyss",
         start: "2021-12-11",
         hours: 3.8,
@@ -68,7 +78,7 @@ export const data: Array<{
         end: "2021-12-11",
         hours: 1.5,
         achievements: [20, 20],
-        tags: [GameTag.Platformer, GameTag.Presition],
+        tags: [GameTag.Platformer, GameTag.Precision],
         state: GameState.Achievements,
         score: {
             content: 1,
@@ -140,7 +150,7 @@ export const data: Array<{
         end: "2021-11-30",
         hours: 0.9,
         state: GameState.Won,
-        tags: [GameTag.Platformer, GameTag.Presition],
+        tags: [GameTag.Platformer, GameTag.Precision],
         score: {
             content: 4,
             lore: 4,
@@ -200,7 +210,7 @@ export const data: Array<{
         hours: 1.3,
         achievements: [4, 14],
         state: GameState.Abandoned,
-        tags: [GameTag.Presition],
+        tags: [GameTag.Precision],
     }, {
         name: "Dadish 2",
         start: "2021-11-21",
@@ -286,7 +296,7 @@ export const data: Array<{
         hours: 9.2,
         achievements: [15, 32],
         state: GameState.Completed,
-        tags: [GameTag.Presition, GameTag.Platformer],
+        tags: [GameTag.Precision, GameTag.Platformer],
         score: {
             content: 10,
             lore: 6,
@@ -303,7 +313,7 @@ export const data: Array<{
         hours: 7.4,
         achievements: [21, 33],
         state: GameState.Completed,
-        tags: [GameTag.Presition, GameTag.Platformer],
+        tags: [GameTag.Precision, GameTag.Platformer],
         score: {
             content: 10,
             lore: 5,
@@ -405,7 +415,7 @@ export const data: Array<{
         hours: 13.3,
         achievements: [39, 49],
         state: GameState.Completed,
-        tags: [GameTag.Presition, GameTag.Platformer],
+        tags: [GameTag.Precision, GameTag.Platformer],
         score: {
             content: 8,
             lore: 4,
@@ -437,7 +447,7 @@ export const data: Array<{
         hours: 3.4,
         achievements: [5, 7],
         state: GameState.Won,
-        tags: [GameTag.Presition],
+        tags: [GameTag.Precision],
         score: {
             content: 2,
             lore: 2,
@@ -496,7 +506,7 @@ export const data: Array<{
         hours: 18.8,
         achievements: [41, 41],
         state: GameState.Achievements,
-        tags: [GameTag.Presition, GameTag.Platformer],
+        tags: [GameTag.Precision, GameTag.Platformer],
         score: {
             content: 8,
             lore: 4,
@@ -538,7 +548,7 @@ export const data: Array<{
         }
     }, {
         name: "Guacamelee 2",
-        start: "2021-12-31",
+        start: "2020-12-31",
         end: "2021-01-01",
         hours: 3.6,
         achievements: [7, 49],
@@ -575,7 +585,7 @@ export const data: Array<{
         end: "2021-08-07",
         hours: 107.3,
         state: GameState.Completed,
-        tags: [GameTag.Presition, GameTag.Platformer],
+        tags: [GameTag.Precision, GameTag.Platformer],
         score: {
             content: 10,
             lore: 6,
@@ -609,7 +619,7 @@ export const data: Array<{
         hours: 4.7,
         achievements: [25, 47],
         state: GameState.Completed,
-        tags: [GameTag.Presition, GameTag.Platformer],
+        tags: [GameTag.Precision, GameTag.Platformer],
         score: {
             content: 8,
             lore: 2,
@@ -625,7 +635,7 @@ export const data: Array<{
         hours: 0.5,
         achievements: [2, 33],
         state: GameState.Banned,
-        tags: [GameTag.Presition],
+        tags: [GameTag.Precision],
         score: {
             content: 6,
             lore: 1,
@@ -656,7 +666,7 @@ export const data: Array<{
         hours: 2,
         achievements: [0, 1],
         state: GameState.Won,
-        tags: [GameTag.Presition, GameTag.Platformer],
+        tags: [GameTag.Precision, GameTag.Platformer],
         score: {
             content: 5,
             lore: 1,
@@ -999,7 +1009,7 @@ export const data: Array<{
         hours: 3.5,
         achievements: [8, 26],
         state: GameState.Won,
-        tags: [GameTag.Rythm, GameTag.Presition]
+        tags: [GameTag.Rythm, GameTag.Precision]
     }, {
         name: "Cypher",
         start: "2019-09-18",
@@ -1034,7 +1044,7 @@ export const data: Array<{
     }, {
         name: "Battleblock theater",
         start: "2019-07-06",
-        hours: 9.9,
+        hours: 11.9,
         achievements: [11, 30],
         state: GameState.Playing,
         tags: [GameTag.Collectathon, GameTag.Platformer]
@@ -1074,7 +1084,7 @@ export const data: Array<{
         end: "2019-02-09",
         achievements: [22, 75],
         state: GameState.Won,
-        tags: [GameTag.Presition]
+        tags: [GameTag.Precision]
     }, {
         name: "Ys the oath in felghana",
         start: "2018-12-29",
@@ -1171,7 +1181,7 @@ export const data: Array<{
         hours: 41.3,
         achievements: [32, 32],
         state: GameState.Achievements,
-        tags: [GameTag.Presition, GameTag.Platformer],
+        tags: [GameTag.Precision, GameTag.Platformer],
         score: {
             content: 10,
             lore: 10,
@@ -1251,7 +1261,7 @@ export const data: Array<{
         hours: 4.2,
         achievements: [19, 106],
         state: GameState.Won,
-        tags: [GameTag.Presition, GameTag.Platformer],
+        tags: [GameTag.Precision, GameTag.Platformer],
         score: {
             content: 10,
             lore: 4,
@@ -1292,7 +1302,7 @@ export const data: Array<{
         hours: 16.6,
         achievements: [21, 28],
         state: GameState.Won,
-        tags: [GameTag.Presition, GameTag.Action]
+        tags: [GameTag.Precision, GameTag.Action]
     }, {
         name: "Bit trip runner 2",
         start: "2017-10-14",
@@ -1667,7 +1677,7 @@ export const data: Array<{
         hours: 34.8,
         achievements: [28, 48],
         state: GameState.Completed,
-        tags: [GameTag.Presition, GameTag.Platformer],
+        tags: [GameTag.Precision, GameTag.Platformer],
         score: {
             content: 10,
             lore: 5,
