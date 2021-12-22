@@ -54,10 +54,19 @@ export const data: Array<{
     }, {
         name: "Milli & Greg",
         start: "2021-12-16",
-        hours: 0.1,
-        achievements: [2, 13],
-        state: GameState.Playing,
+        end: "2021-12-21",
+        hours: 2.7,
+        achievements: [13, 13],
+        state: GameState.Achievements,
         tags: [GameTag.Precision, GameTag.Platformer],
+        score: {
+            content: 6,
+            lore: 3,
+            mechanics: 4,
+            controls: 9,
+            music: 7,
+            graphics: 5,
+        }
     }, {
         name: "Neon abyss",
         start: "2021-12-11",
@@ -1044,10 +1053,20 @@ export const data: Array<{
     }, {
         name: "Battleblock theater",
         start: "2019-07-06",
-        hours: 11.9,
-        achievements: [11, 30],
-        state: GameState.Playing,
-        tags: [GameTag.Collectathon, GameTag.Platformer]
+        end: "2021-12-19",
+        hours: 15.8,
+        achievements: [15, 30],
+        state: GameState.Completed,
+        tags: [GameTag.Collectathon, GameTag.Platformer],
+        score: {
+            content: 7,
+            lore: 4,
+            mechanics: 4,
+            bosses: 3,
+            controls: 7,
+            music: 5,
+            graphics: 5,
+        }
     }, {
         name: "Overcooked",
         start: "2019-05-13",
