@@ -32,6 +32,14 @@ export interface ScoreI {
     extra?: Array<{ bias: number; info: string }>
 }
 
+/*
+    extra:
+        precision:
+            dark world
+        metroidvania
+            map marker
+*/
+
 export const data: Array<{
     name: string
     start: string
@@ -44,6 +52,82 @@ export const data: Array<{
     score?: ScoreI
 }> = [
     {
+        name: "Haiki",
+        start: "2021-12-30",
+        state: GameState.Playing,
+        tags: [GameTag.Precision, GameTag.Platformer],
+    }, {
+        name: "Fenix Rage",
+        start: "2021-12-29",
+        state: GameState.Playing,
+        tags: [GameTag.Precision, GameTag.Platformer],
+    }, {
+        name: "Dojoran",
+        start: "2021-12-29",
+        state: GameState.Playing,
+        tags: [GameTag.Precision, GameTag.Platformer],
+    }, {
+        name: "Disc room",
+        start: "2021-12-27",
+        end: "2021-12-27",
+        state: GameState.Won,
+        tags: [GameTag.Precision],
+    }, {
+        name: "Sockventure",
+        start: "2021-12-24",
+        state: GameState.Playing,
+        tags: [GameTag.Precision, GameTag.Platformer],
+        score: {
+            content: 9,
+            lore: 4,
+            mechanics: 8,
+            controls: 10,
+            music: 6,
+            graphics: 7,
+        }
+    }, {
+        name: "Mini Ghost",
+        start: "2021-12-23",
+        state: GameState.Banned,
+        tags: [GameTag.Metroidvania],
+        score: {
+            mechanics: 2,
+            controls: 2,
+            music: 1,
+            graphics: 2,
+        }
+    }, {
+        name: "Blitz Breaker",
+        start: "2021-12-22",
+        state: GameState.Completed,
+        tags: [GameTag.Precision],
+        recomended: "positive",
+        score: {
+            content: 6,
+            lore: 2,
+            mechanics: 5,
+            bosses: 5,
+            controls: 8,
+            music: 5,
+            graphics: 4,
+        }
+    }, {
+        name: "Gato Roboto",
+        start: "2021-12-22",
+        end: "2021-12-23",
+        hours: 2.8,
+        achievements: [7, 12],
+        state: GameState.Won,
+        tags: [GameTag.Metroidvania],
+        score: {
+            content: 4,
+            lore: 3,
+            mechanics: 4,
+            controls: 8,
+            music: 4,
+            graphics: 3,
+        }
+    }, {
         name: "Press any button",
         start: "2021-12-17",
         end: "2021-12-17",
@@ -72,14 +156,14 @@ export const data: Array<{
         start: "2021-12-11",
         hours: 3.8,
         achievements: [5, 35],
-        state: GameState.Playing,
+        state: GameState.Abandoned,
         tags: [GameTag.Roguelike, GameTag.Platformer],
     }, {
         name: "Gravitas",
         start: "2021-12-11",
         hours: 0.5,
         achievements: [7, 20],
-        state: GameState.Playing,
+        state: GameState.Abandoned,
         tags: [GameTag.Puzzles]
     }, {
         name: "Dead Dungeon",
@@ -103,7 +187,7 @@ export const data: Array<{
         start: "2021-12-10",
         hours: 1,
         achievements: [2, 24],
-        state: GameState.Playing,
+        state: GameState.Abandoned,
         tags: [GameTag.Metroidvania],
     }, {
         name: "SteamWorld dig 2",

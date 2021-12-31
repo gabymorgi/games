@@ -1,5 +1,5 @@
 import 'antd/dist/antd.css';
-import { Col, Divider, Row, Table } from 'antd';
+import { Button, Col, Divider, Row, Switch, Table } from 'antd';
 //import './index.css'
 import { data, GameState, GameTag } from './data'
 import { Line, Pie } from 'react-chartjs-2';
@@ -7,7 +7,7 @@ import { useMemo, useState } from 'react'
 import { Tags, tagToString } from './components/Tags';
 import { State, stateInfo } from './components/State';
 import { Achievements } from './components/Achievements'
-import { areIntervalsOverlapping, endOfMonth, endOfYear, eachMonthOfInterval, format, getYear, startOfYear, isWithinInterval, differenceInDays, eachYearOfInterval } from 'date-fns';
+import { areIntervalsOverlapping, endOfMonth, endOfYear, eachMonthOfInterval, format, getYear, startOfYear, isWithinInterval, differenceInDays, eachYearOfInterval, addYears, subYears } from 'date-fns';
 import { Score, ScoreHeader } from './components/Score'
 
 import {
@@ -23,6 +23,7 @@ import {
 } from 'chart.js'
 import { Chart } from 'react-chartjs-2'
 import styled from 'styled-components';
+import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
 
 ChartJS.register(
   CategoryScale,
@@ -39,6 +40,11 @@ const ChartCol = styled(Col)`
   align-items: center;
   justify-content: center;
   display: flex;
+  flex-direction: column;
+`
+
+const Filters = styled.div`
+  margin-bottom: 10px;
 `
 
 function App() {
@@ -65,7 +71,7 @@ function App() {
     }).forEach((g) => {
       if (g.state !== GameState.Abandoned && g.state !== GameState.Banned) {
         g.tags.forEach((t) => {
-          tagsData[t] = (tagsData[t] || 0) + 1
+          tagsData[t] = (tagsData[t] || 0) + (g.hours || 1)
         })
       }
       stateData[g.state] = (stateData[g.state] || 0) + 1
@@ -87,18 +93,23 @@ function App() {
       }
     })
 
+    const tagsFilteredData = Object.entries(tagsData).sort(([key1, value1], [key2, value2]) => value2 - value1).slice(0, 6)
+
     return {
       gamesCount: data.filter((g) => g.end ? areIntervalsOverlapping(
         filterInterval, { start: new Date(g.start), end: new Date(g.end) }, { inclusive: true }
       ) : isWithinInterval(new Date(g.start), filterInterval)).length,
+      hoursCount: data.filter((g) => g.end ? areIntervalsOverlapping(
+        filterInterval, { start: new Date(g.start), end: new Date(g.end) }, { inclusive: true }
+      ) : isWithinInterval(new Date(g.start), filterInterval)).reduce((acum, g) => acum + (g.hours || 0), 0),
       hourChart: {
         labels: dataIntervals.map((di) => di.label),
         values: dataIntervals.map((di) => Math.round(di.hours)),
       },
       tagChart: {
-        labels: Object.keys(tagsData).map((k: string) => GameTag[Number(k)]),
-        values: Object.values(tagsData),
-        hue: Object.keys(tagsData).map((k) => tagToString[k as unknown as GameTag].color)
+        labels: tagsFilteredData.map(([key]) => GameTag[Number(key)]),
+        values: tagsFilteredData.map(([_, value]) => value),
+        hue: tagsFilteredData.map(([key]) => tagToString[key as unknown as GameTag].color)
       },
       stateChart: {
         labels: Object.keys(stateData).map((k: string) => GameState[Number(k)]),
@@ -106,9 +117,7 @@ function App() {
         hue: Object.keys(stateData).map((k) => stateInfo[k as unknown as GameState].color)
       }
     }
-  }, [data])
-
-  console.log(dataCharts)
+  }, [data, seeHistory, interval])
 
   const dataSource = useMemo(() => {
     if (!data) return []
@@ -131,7 +140,20 @@ function App() {
 
   return (
     <div className="App">
-      <Row>
+      <Row gutter={[8, 32]}>
+        <ChartCol span={24}>
+          <Filters>
+            <div className="range-container">
+              <Button disabled={seeHistory} icon={<LeftCircleOutlined />} onClick={() => setInterval(subYears(interval, 1))} />
+              {seeHistory ? "-" : format(interval, "yyyy")}
+              <Button disabled={seeHistory} icon={<RightCircleOutlined />} onClick={() => setInterval(addYears(interval, 1))} />
+            </div>
+          </Filters>
+          See complete history <Switch onChange={(checked) => setSeeHistory(checked)} />
+          <br />
+          <div>Total Hours Played: {dataCharts.hoursCount?.toFixed(2)}</div>
+          <div>Total Games Played: {dataCharts.gamesCount}</div>
+        </ChartCol>
         <ChartCol span={8}>
           {dataCharts.hourChart ? <Line
             datasetIdKey='id'
