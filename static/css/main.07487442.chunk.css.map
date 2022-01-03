@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/index.css"],"names":[],"mappings":"AAAA,KACE,YACF,CAEA,UACE,qBACF,CAEA,SACE,+CACF","file":"main.07487442.chunk.css","sourcesContent":["body {\n  padding: 20px;\n}\n\n.even-row {\n  background-color: white;\n}\n\n.odd-row {\n  background-color: #00000010;\n}\n"]}
