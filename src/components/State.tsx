@@ -11,8 +11,8 @@ export const stateInfo: {
         label: "Banned",
         color: "#300000",
     },
-    [GameState.Abandoned]: {
-        label: "Abandoned",
+    [GameState.Dropped]: {
+        label: "Dropped",
         color: "#CC0000",
     },
     [GameState.Playing]: {

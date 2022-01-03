@@ -69,7 +69,7 @@ function App() {
         ? areIntervalsOverlapping( filterInterval, { start: new Date(g.start), end: new Date(g.end) }, { inclusive: true })
         : isWithinInterval(new Date(g.start), filterInterval)
     }).forEach((g) => {
-      if (g.state !== GameState.Abandoned && g.state !== GameState.Banned) {
+      if (g.state !== GameState.Dropped && g.state !== GameState.Banned) {
         g.tags.forEach((t) => {
           tagsData[t] = (tagsData[t] || 0) + (g.hours || 1)
         })
@@ -133,10 +133,15 @@ function App() {
         hours: g.hours,
         achievements: g.achievements ? <Achievements obtained={g.achievements[0]} total={g.achievements[1]} /> : undefined,
         tags: <Tags tags={g.tags} />,
-        score: <Score score={g.score} />
+        score: <Score score={g.score} />,
+        rawTags: g.tags,
       }
     })
   }, [data])
+
+  const gameTags = useMemo(() => {
+    return Object.keys(GameTag).filter(key => !isNaN(Number(key))).map(key => ({ text: GameTag[Number(key)], value: key }))
+  }, [])
 
   return (
     <div className="App">
@@ -203,9 +208,7 @@ function App() {
         dataSource={dataSource}
         rowKey="name"
         size="small"
-        pagination={{
-          defaultPageSize: 50,
-        }}
+        pagination={false}
         rowClassName={(record) => record.rowClassName}
       >
         <Table.Column title="Name" dataIndex="name" />
@@ -214,7 +217,13 @@ function App() {
         <Table.Column title="State" dataIndex="state" />
         <Table.Column title="Hours" dataIndex="hours" />
         <Table.Column title="Achievements" dataIndex="achievements" />
-        <Table.Column title="Tags" dataIndex="tags" />
+        <Table.Column
+          title="Tags"
+          dataIndex="tags"
+          filters={gameTags}
+          onFilter={(filter, record: { rawTags: GameTag[] }) =>
+            record.rawTags.includes(Number(filter))}
+        />
         <Table.Column title={<ScoreHeader />} dataIndex="score" />
       </Table>
     </div>

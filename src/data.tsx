@@ -19,7 +19,7 @@ export enum GameTag {
     TowerDefense,
     TurnBased,
 }
-export enum GameState { Banned, Abandoned, Playing, Won, Completed, Achievements }
+export enum GameState { Banned, Dropped, Playing, Won, Completed, Achievements }
 
 export interface ScoreI {
     content?: number
@@ -52,30 +52,98 @@ export const data: Array<{
     score?: ScoreI
 }> = [
     {
+        name: "Slime-san",
+        start: "2022-01-02",
+        hours: 1,
+        achievements: [0, 30],
+        state: GameState.Playing,
+        tags: [GameTag.MuchoTexto],
+    }, {
+        name: "Rotund Takeoff",
+        start: "2022-01-02",
+        hours: 1.5,
+        achievements: [6, 18],
+        state: GameState.Playing,
+        tags: [GameTag.Precision],
+    }, {
+        name: "The great ace attorney chronicles",
+        start: "2022-01-01",
+        hours: 0.5,
+        achievements: [0, 30],
+        state: GameState.Playing,
+        tags: [GameTag.MuchoTexto],
+    }, {
+        name: "Xeodrifter",
+        start: "2021-12-31",
+        end: "2022-01-01",
+        hours: 2.3,
+        recomended: "negative",
+        achievements: [11, 17],
+        state: GameState.Won,
+        tags: [GameTag.Metroidvania],
+        score: {
+            content: 5,
+            lore: 2,
+            mechanics: 5,
+            controls: 5,
+            music: 4,
+            graphics: 4,
+            bosses: 4,
+        }
+    }, {
         name: "Haiki",
         start: "2021-12-30",
-        state: GameState.Playing,
+        end: "2022-01-02",
+        hours: 1.2,
+        state: GameState.Dropped,
         tags: [GameTag.Precision, GameTag.Platformer],
+        score: {
+            content: 3,
+            lore: 2,
+            mechanics: 3,
+            controls: 3,
+            music: 2,
+            graphics: 1,
+        }
     }, {
         name: "Fenix Rage",
         start: "2021-12-29",
-        state: GameState.Playing,
-        tags: [GameTag.Precision, GameTag.Platformer],
+        end: "2021-12-31",
+        hours: 2.1,
+        achievements: [9, 35],
+        state: GameState.Banned,
+        tags: [GameTag.Precision],
+        score: {
+            content: 5,
+            lore: 2,
+            mechanics: 2,
+            controls: 4,
+            music: 8,
+            graphics: 4,
+            bosses: 4,
+        }
     }, {
         name: "Dojoran",
         start: "2021-12-29",
+        hours: 1.3,
+        achievements: [4, 20],
         state: GameState.Playing,
         tags: [GameTag.Precision, GameTag.Platformer],
     }, {
         name: "Disc room",
         start: "2021-12-27",
         end: "2021-12-27",
+        hours: 1.3,
+        achievements: [13, 35],
         state: GameState.Won,
         tags: [GameTag.Precision],
     }, {
         name: "Sockventure",
         start: "2021-12-24",
-        state: GameState.Playing,
+        end: "2021-12-28",
+        hours: 4.5,
+        achievements: [33, 60],
+        state: GameState.Won,
         tags: [GameTag.Precision, GameTag.Platformer],
         score: {
             content: 9,
@@ -100,6 +168,8 @@ export const data: Array<{
         name: "Blitz Breaker",
         start: "2021-12-22",
         state: GameState.Completed,
+        hours: 6.2,
+        achievements: [8, 13],
         tags: [GameTag.Precision],
         recomended: "positive",
         score: {
@@ -156,14 +226,14 @@ export const data: Array<{
         start: "2021-12-11",
         hours: 3.8,
         achievements: [5, 35],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Roguelike, GameTag.Platformer],
     }, {
         name: "Gravitas",
         start: "2021-12-11",
         hours: 0.5,
         achievements: [7, 20],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Puzzles]
     }, {
         name: "Dead Dungeon",
@@ -187,7 +257,7 @@ export const data: Array<{
         start: "2021-12-10",
         hours: 1,
         achievements: [2, 24],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Metroidvania],
     }, {
         name: "SteamWorld dig 2",
@@ -211,7 +281,7 @@ export const data: Array<{
         start: "2021-11-30",
         hours: 1,
         achievements: [1, 41],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Platformer],
     }, {
         name: "Magicat",
@@ -302,7 +372,7 @@ export const data: Array<{
         start: "2021-11-21",
         hours: 1.3,
         achievements: [4, 14],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Precision],
     }, {
         name: "Dadish 2",
@@ -357,7 +427,7 @@ export const data: Array<{
         start: "2021-10-27",
         hours: 1.8,
         achievements: [3, 20],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Puzzles]
     }, {
         name: "Axiom verge 2",
@@ -437,14 +507,14 @@ export const data: Array<{
         start: "2021-09-23",
         hours: 2.8,
         achievements: [13, 42],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Roguelike],
     }, {
         name: "Greak memories of azur",
         start: "2021-09-23",
         hours: 0.6,
         achievements: [1, 24],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Platformer, GameTag.Action],
     }, {
         name: "Evergate",
@@ -499,7 +569,7 @@ export const data: Array<{
         end: "2021-07-30",
         hours: 0.8,
         achievements: [3, 16],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Puzzles],
     }, {
         name: "Never give up",
@@ -524,14 +594,14 @@ export const data: Array<{
         start: "2021-07-14",
         hours: 0.6,
         achievements: [2, 31],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Action, GameTag.Platformer],
     }, {
         name: "Skul the hero slayer",
         start: "2021-07-13",
         hours: 1.5,
         achievements: [2, 60],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Roguelike],
     }, {
         name: "Rite",
@@ -555,7 +625,7 @@ export const data: Array<{
         start: "2021-07-11",
         end: "2021-07-12",
         hours: 2.3,
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Puzzles],
     }, {
         name: "Inmost",
@@ -568,7 +638,7 @@ export const data: Array<{
         name: "A hat in a time",
         start: "2021-07-03",
         achievements: [3, 46],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Platformer, GameTag.Collectathon],
     }, {
         name: "Bug fables",
@@ -590,7 +660,7 @@ export const data: Array<{
         name: "Paradise killer",
         start: "2021-06-24",
         hours: 1.2,
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.MuchoTexto]
     }, {
         name: "DYE",
@@ -629,7 +699,7 @@ export const data: Array<{
         name: "Crash Bandicoot 4",
         start: "2021-03-27",
         end: "2021-04-01",
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Collectathon, GameTag.Platformer],
         score: {
             content: 8,
@@ -645,7 +715,7 @@ export const data: Array<{
         end: "2021-01-01",
         hours: 3.6,
         achievements: [7, 49],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Metroidvania, GameTag.Platformer],
         score: {
             content: 8,
@@ -695,7 +765,7 @@ export const data: Array<{
         end: "2020-12-20",
         hours: 3,
         achievements: [9, 17],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Platformer],
         score: {
             content: 4,
@@ -751,7 +821,7 @@ export const data: Array<{
         end: "2020-12-06",
         hours: 3.5,
         achievements: [2, 37],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Collectathon, GameTag.Platformer],
     }, {
         name: "Dustforce",
@@ -773,7 +843,7 @@ export const data: Array<{
         end: "2020-11-22",
         hours: 1.8,
         achievements: [3, 32],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Puzzles]
     }, {
         name: "Dandara",
@@ -930,7 +1000,7 @@ export const data: Array<{
         end: "2020-07-04",
         hours: 3.1,
         achievements: [4, 17],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Puzzles]
     }, {
         name: "Shovel knight",
@@ -955,7 +1025,7 @@ export const data: Array<{
         end: "2020-05-29",
         hours: 12.1,
         achievements: [1, 27],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.RPG, GameTag.MuchoTexto]
     }, {
         name: "One finger death punch 2",
@@ -963,7 +1033,7 @@ export const data: Array<{
         end: "2020-12-19",
         hours: 5.6,
         achievements: [35, 63],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Action]
     }, {
         name: "The nonary games",
@@ -971,7 +1041,7 @@ export const data: Array<{
         end: "2020-06-03",
         hours: 34.7,
         achievements: [11, 38],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.MuchoTexto, GameTag.Puzzles]
     }, {
         name: "One finger death punch",
@@ -986,7 +1056,7 @@ export const data: Array<{
         start: "2020-03-30",
         hours: 4.7,
         achievements: [0, 9],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Metroidvania]
     }, {
         name: "Doki doki Literature Club",
@@ -1050,7 +1120,7 @@ export const data: Array<{
         end: "2020-04-04",
         hours: 5.3,
         achievements: [1, 18],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Puzzles]
     }, {
         name: "Phoenix Wright: Ace attorney trilogy",
@@ -1058,7 +1128,7 @@ export const data: Array<{
         end: "2020-03-24",
         hours: 45.8,
         achievements: [13, 30],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.MuchoTexto]
     }, {
         name: "The messenger",
@@ -1116,7 +1186,7 @@ export const data: Array<{
         end: "2019-08-29",
         hours: 7.5,
         achievements: [33, 38],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Roguelike]
     }, {
         name: "Lode runner legacy",
@@ -1157,7 +1227,7 @@ export const data: Array<{
         end: "2019-11-21",
         hours: 8.1,
         achievements: [7, 12],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Cooperative]
     }, {
         name: "Keep talking",
@@ -1173,13 +1243,13 @@ export const data: Array<{
         end: "2020-08-07",
         hours: 3,
         achievements: [14, 87],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Metroidvania]
     }, {
         name: "Owlboy",
         start: "2019-01-04",
         achievements: [1, 12],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Platformer],
     }, {
         name: "Circa infinity",
@@ -1242,7 +1312,7 @@ export const data: Array<{
         end: "2018-08-25",
         hours: 6.9,
         achievements: [12, 19],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Programing]
     }, {
         name: "Wizard of legend",
@@ -1250,7 +1320,7 @@ export const data: Array<{
         end: "2020-12-05",
         hours: 4.5,
         achievements: [6, 19],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Roguelike]
     }, {
         name: "Iconoclasts",
@@ -1297,7 +1367,7 @@ export const data: Array<{
         name: "The dream machine",
         start: "2018-06-16",
         achievements: [0, 46],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.PointAndClick]
     }, {
         name: "Crypt of the necrodancer",
@@ -1380,7 +1450,7 @@ export const data: Array<{
         end: "2020-01-18",
         hours: 84.5,
         achievements: [18, 54],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Roguelike],
     }, {
         name: "Sonic forces",
@@ -1463,7 +1533,7 @@ export const data: Array<{
         end: "2016-12-16",
         hours: 1,
         achievements: [4, 50],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.TowerDefense]
     }, {
         name: "Security hole",
@@ -1471,7 +1541,7 @@ export const data: Array<{
         end: "2016-12-16",
         hours: 2.1,
         achievements: [28, 88],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Puzzles]
     }, {
         name: "Nihilumbra",
@@ -1502,7 +1572,7 @@ export const data: Array<{
         end: "2017-08-18",
         hours: 8.2,
         achievements: [5, 11],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Programing]
     }, {
         name: "Spellweaver",
@@ -1510,7 +1580,7 @@ export const data: Array<{
         end: "2017-02-19",
         hours: 69.5,
         achievements: [12, 20],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Board]
     }, {
         name: "Limbo",
@@ -1578,7 +1648,7 @@ export const data: Array<{
         end: "2016-02-21",
         hours: 2,
         achievements: [2, 18],
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Puzzles]
     }, {
         name: "Castle of illusion",
@@ -1759,7 +1829,7 @@ export const data: Array<{
     }, {
         name: "The binding of isaac",
         start: "2012-01-01",
-        state: GameState.Abandoned,
+        state: GameState.Dropped,
         tags: [GameTag.Roguelike]
     }, {
         name: "VVVVVV",
