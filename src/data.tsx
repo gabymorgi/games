@@ -52,19 +52,52 @@ export const data: Array<{
     score?: ScoreI
 }> = [
     {
+        name: "Trash Quest",
+        start: "2022-01-07",
+        end: "2022-01-07",
+        hours: 1.3,
+        achievements: [14, 28],
+        state: GameState.Won,
+        tags: [GameTag.Metroidvania, GameTag.Precision],
+        score: {
+            content: 2,
+            lore: 1,
+            mechanics: 3,
+            controls: 5,
+            graphics: 1,
+            bosses: 2,
+        }
+    }, {
+        name: "Sundered: Eldritch Edition",
+        start: "2022-01-04",
+        hours: 4.3,
+        achievements: [7, 20],
+        state: GameState.Playing,
+        tags: [GameTag.Metroidvania],
+    }, {
         name: "Slime-san",
         start: "2022-01-02",
-        hours: 1,
-        achievements: [0, 30],
+        hours: 2,
+        achievements: [8, 85],
         state: GameState.Playing,
-        tags: [GameTag.MuchoTexto],
+        tags: [GameTag.Precision, GameTag.Platformer],
     }, {
         name: "Rotund Takeoff",
         start: "2022-01-02",
-        hours: 1.5,
-        achievements: [6, 18],
-        state: GameState.Playing,
+        end: "2022-01-04",
+        hours: 3,
+        achievements: [10, 18],
+        state: GameState.Won,
         tags: [GameTag.Precision],
+        score: {
+            content: 4,
+            lore: 2,
+            mechanics: 3,
+            controls: 5,
+            music: 2,
+            graphics: 2,
+            bosses: 4,
+        }
     }, {
         name: "The great ace attorney chronicles",
         start: "2022-01-01",
@@ -125,8 +158,8 @@ export const data: Array<{
     }, {
         name: "Dojoran",
         start: "2021-12-29",
-        hours: 1.3,
-        achievements: [4, 20],
+        hours: 1.9,
+        achievements: [5, 20],
         state: GameState.Playing,
         tags: [GameTag.Precision, GameTag.Platformer],
     }, {
@@ -1783,7 +1816,7 @@ export const data: Array<{
         state: GameState.Won,
         tags: [GameTag.Puzzles, GameTag.Platformer]
     }, {
-        name: "Anitchamber",
+        name: "Antichamber",
         start: "2013-01-01",
         state: GameState.Won,
         tags: [GameTag.Puzzles]

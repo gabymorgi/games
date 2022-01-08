@@ -7,7 +7,7 @@ import { useMemo, useState } from 'react'
 import { Tags, tagToString } from './components/Tags';
 import { State, stateInfo } from './components/State';
 import { Achievements } from './components/Achievements'
-import { areIntervalsOverlapping, endOfMonth, endOfYear, eachMonthOfInterval, format, getYear, startOfYear, isWithinInterval, differenceInDays, eachYearOfInterval, addYears, subYears } from 'date-fns';
+import { areIntervalsOverlapping, endOfMonth, endOfYear, eachMonthOfInterval, format, getYear, startOfYear, isWithinInterval, differenceInDays, eachYearOfInterval, addYears, subYears, parseISO, getOverlappingDaysInIntervals } from 'date-fns';
 import { Score, ScoreHeader } from './components/Score'
 
 import {
@@ -24,6 +24,7 @@ import {
 import { Chart } from 'react-chartjs-2'
 import styled from 'styled-components';
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
+import { endOfDay } from 'date-fns/esm';
 
 ChartJS.register(
   CategoryScale,
@@ -55,7 +56,7 @@ function App() {
     if (!data) return {}
     let intervals
     let filterInterval = seeHistory
-      ? { start: new Date("2012-01-01"), end: new Date() }
+      ? { start: parseISO("2012-01-01"), end: new Date() }
       : { start: startOfYear(interval), end: endOfYear(interval) }
     if (seeHistory) {
       intervals = eachYearOfInterval(filterInterval).map((m) => ({ start: m, end: endOfYear(m), label: format(m, "yyyy") }))
@@ -66,8 +67,8 @@ function App() {
     let stateData: { [key in GameState]?: number } = {}
     data.filter((g) => {
       return g.end
-        ? areIntervalsOverlapping( filterInterval, { start: new Date(g.start), end: new Date(g.end) }, { inclusive: true })
-        : isWithinInterval(new Date(g.start), filterInterval)
+        ? areIntervalsOverlapping( filterInterval, { start: parseISO(g.start), end: parseISO(g.end) }, { inclusive: true })
+        : isWithinInterval(parseISO(g.start), filterInterval)
     }).forEach((g) => {
       if (g.state !== GameState.Dropped && g.state !== GameState.Banned) {
         g.tags.forEach((t) => {
@@ -78,13 +79,17 @@ function App() {
     })
 
     const dataIntervals = intervals.map((i) => {
-      const daysInInterval = differenceInDays(i.end, i.start)
       const gamesInInterval = data.filter((g) => g.end ? areIntervalsOverlapping(
-        i, { start: new Date(g.start), end: new Date(g.end) }, { inclusive: true }
-      ) : isWithinInterval(new Date(g.start), i))
+        i, { start: parseISO(g.start), end: parseISO(g.end) }, { inclusive: true }
+      ) : isWithinInterval(parseISO(g.start), i))
       const hours = gamesInInterval.reduce((acum, g) => {
-        const days = g.end ? differenceInDays(new Date(g.end), new Date(g.start)) : 1
-        const percentage = days > daysInInterval ? daysInInterval / days : 1
+        const gameInterval = {
+          start: parseISO(g.start),
+          end: g.end ? parseISO(g.end) : endOfDay(parseISO(g.start)),
+        }
+        const days = g.end ? differenceInDays(gameInterval.end, gameInterval.start) || 1 : 1
+        const overlappingDays = getOverlappingDaysInIntervals(gameInterval, { start: i.start, end: i.end }) || 1
+        const percentage = overlappingDays / days
         return acum + (g.hours || 0) * percentage
       }, 0)
       return {
@@ -97,11 +102,11 @@ function App() {
 
     return {
       gamesCount: data.filter((g) => g.end ? areIntervalsOverlapping(
-        filterInterval, { start: new Date(g.start), end: new Date(g.end) }, { inclusive: true }
-      ) : isWithinInterval(new Date(g.start), filterInterval)).length,
+        filterInterval, { start: parseISO(g.start), end: parseISO(g.end) }, { inclusive: true }
+      ) : isWithinInterval(parseISO(g.start), filterInterval)).length,
       hoursCount: data.filter((g) => g.end ? areIntervalsOverlapping(
-        filterInterval, { start: new Date(g.start), end: new Date(g.end) }, { inclusive: true }
-      ) : isWithinInterval(new Date(g.start), filterInterval)).reduce((acum, g) => acum + (g.hours || 0), 0),
+        filterInterval, { start: parseISO(g.start), end: parseISO(g.end) }, { inclusive: true }
+      ) : isWithinInterval(parseISO(g.start), filterInterval)).reduce((acum, g) => acum + (g.hours || 0), 0),
       hourChart: {
         labels: dataIntervals.map((di) => di.label),
         values: dataIntervals.map((di) => Math.round(di.hours)),
@@ -122,8 +127,8 @@ function App() {
   const dataSource = useMemo(() => {
     if (!data) return []
     return data.map((g) => {
-      const start = new Date(g.start)
-      const end = g.end ? new Date(g.end) : undefined
+      const start = parseISO(g.start)
+      const end = g.end ? parseISO(g.end) : undefined
       return {
         name: g.name,
         rowClassName: getYear(start) % 2 === 0 ? 'even-row' : 'odd-row',
