@@ -4,7 +4,7 @@ import { GameTag } from "../data";
 
 const Tag = styled.div<{ colorH: number }>`
     ${(props) => `
-        color: hsla(${props.colorH}, 100%, 30%, 1);
+        color: hsla(${props.colorH}, 100%, 70%, 1);
         border: 2px solid hsla(${props.colorH}, 100%, 40%, 1);
         background: hsla(${props.colorH}, 100%, 40%, 0.2);
     `}

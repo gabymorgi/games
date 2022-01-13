@@ -7,7 +7,7 @@ const Background = styled.div<{ obtained: number; total: number }>`
     font-weight: bold;
     color: white;
     position: relative;
-    background: #A000A0;
+    background: #600060;
     width: 100%;
     border-radius: 4px;
     padding: 4px;
@@ -19,7 +19,7 @@ const Background = styled.div<{ obtained: number; total: number }>`
         bottom: 0;
         border-radius: 4px;
         position: absolute;
-        background: #00A0A0;
+        background: #006060;
         width: ${props => (props.obtained / props.total) * 100}%;
     }
 

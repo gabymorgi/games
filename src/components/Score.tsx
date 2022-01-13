@@ -1,7 +1,7 @@
 import { Tooltip } from 'antd'
 import styled from 'styled-components'
 import { ScoreI } from '../data'
-import { DislikeFilled, InfoCircleFilled, LikeFilled } from '@ant-design/icons'
+import { DislikeFilled, LikeFilled } from '@ant-design/icons'
 
 const StyledScoreHeader = styled.div`
     .title {
@@ -53,9 +53,10 @@ const StyledScoreBar = styled.div<{ value?: number }>`
     width: 25px;
     text-align: center;
     font-weight: bold;
+    color: white;
     ${props => {
         if (props.value) {
-            const color = `hsl(${12 * props.value}, 100%, 50%)`
+            const color = `hsl(${12 * props.value}, 100%, 30%)`
             return `
                 background: ${color};
                 border-left: 1px solid ${color};
