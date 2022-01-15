@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { isMobile } from "./Resolutions";
 
 export const Filters = styled.div`
   display: flex;
@@ -30,6 +31,14 @@ export const Filters = styled.div`
       font-weight: bold;
     }
   }
+
+  @media(${isMobile}) {
+    flex-direction: column;
+    row-gap: 20px;
+    > * {
+      width: 100%;
+    }
+  }
 `
 
 export const PieCharts = styled.div`
@@ -41,6 +50,14 @@ export const PieCharts = styled.div`
     min-height: 100px;
     height: 50vh;
     background-color: #111;
+  }
+
+  @media(${isMobile}) {
+    flex-direction: column;
+    row-gap: 20px;
+    > * {
+      width: 100%;
+    }
   }
 `
 

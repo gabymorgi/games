@@ -875,7 +875,7 @@ export const data: Array<GameI> = [
     name: "Super meat boy forever",
     start: "2020-12-25",
     end: "2022-01-11",
-    hours: 107.3 + 4.6,
+    hours: 107 + 9.5,
     achievements: [25, 36],
     state: GameState.Completed,
     tags: [GameTag.Precision, GameTag.Platformer],

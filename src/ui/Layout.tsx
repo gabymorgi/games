@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export const FlexSection = styled.div`
+export const FlexSection = styled.div<{ gutter?: number; direction?: 'row' | 'column' }>`
   display: flex;
-  flex-direction: column;
-  row-gap: 20px;
+  flex-direction: ${props => props.direction || 'row'};
+  gap: ${props => props.gutter || 20}px;
 `

@@ -12,7 +12,7 @@ import {
 } from 'chart.js'
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
 import { useMemo, useState } from 'react';
-import { data, GameI, GameState, GameTag } from '../data';
+import { GameState, GameTag } from '../data';
 import {
   addYears,
   areIntervalsOverlapping, 
@@ -24,6 +24,7 @@ import {
   endOfYear, 
   format, 
   getOverlappingDaysInIntervals, 
+  getYear, 
   isWithinInterval, 
   parseISO, 
   startOfYear, 
@@ -34,6 +35,7 @@ import Button from '../ui/Button';
 import Switch from '../ui/Switch';
 import * as styles from '../styles/ChartStyles';
 import { FlexSection } from '../ui/Layout';
+import { ParsedDataI } from '../back/dataQuery';
 
 ChartJS.register(
   CategoryScale,
@@ -127,8 +129,11 @@ const GameTagsOptions = {
 }
 
 interface ChartProps {
-  data: GameI[]
+  data: ParsedDataI[]
 }
+
+const MAX_YEAR = getYear(new Date())
+const MIN_YEAR = 2012
 
 export const ChartComponent: React.FC<ChartProps> = (props) => {
   const [interval, setInterval] = useState(new Date())
@@ -149,8 +154,8 @@ export const ChartComponent: React.FC<ChartProps> = (props) => {
     let stateData: { [key in GameState]?: number } = {}
     props.data.filter((g) => {
       return g.end
-        ? areIntervalsOverlapping( filterInterval, { start: parseISO(g.start), end: parseISO(g.end) }, { inclusive: true })
-        : isWithinInterval(parseISO(g.start), filterInterval)
+        ? areIntervalsOverlapping( filterInterval, { start: g.start, end: g.end }, { inclusive: true })
+        : isWithinInterval(g.start, filterInterval)
     }).forEach((g) => {
       if (g.state !== GameState.Dropped && g.state !== GameState.Banned) {
         g.tags.forEach((t) => {
@@ -162,12 +167,12 @@ export const ChartComponent: React.FC<ChartProps> = (props) => {
 
     const dataIntervals = intervals.map((i) => {
       const gamesInInterval = props.data.filter((g) => g.end ? areIntervalsOverlapping(
-        i, { start: parseISO(g.start), end: parseISO(g.end) }, { inclusive: true }
-      ) : isWithinInterval(parseISO(g.start), i))
+        i, { start: g.start, end: g.end }, { inclusive: true }
+      ) : isWithinInterval(g.start, i))
       const hours = gamesInInterval.reduce((acum, g) => {
         const gameInterval = {
-          start: parseISO(g.start),
-          end: g.end ? parseISO(g.end) : endOfDay(parseISO(g.start)),
+          start: g.start,
+          end: g.end ? g.end : endOfDay(g.start),
         }
         const days = g.end ? differenceInDays(gameInterval.end, gameInterval.start) || 1 : 1
         const overlappingDays = getOverlappingDaysInIntervals(gameInterval, { start: i.start, end: i.end }) || 1
@@ -183,12 +188,12 @@ export const ChartComponent: React.FC<ChartProps> = (props) => {
     const tagsFilteredData = Object.entries(tagsData).sort(([key1, value1], [key2, value2]) => value2 - value1).slice(0, 6)
 
     return {
-      gamesCount: data.filter((g) => g.end ? areIntervalsOverlapping(
-        filterInterval, { start: parseISO(g.start), end: parseISO(g.end) }, { inclusive: true }
-      ) : isWithinInterval(parseISO(g.start), filterInterval)).length,
-      hoursCount: data.filter((g) => g.end ? areIntervalsOverlapping(
-        filterInterval, { start: parseISO(g.start), end: parseISO(g.end) }, { inclusive: true }
-      ) : isWithinInterval(parseISO(g.start), filterInterval)).reduce((acum, g) => acum + (g.hours || 0), 0),
+      gamesCount: props.data.filter((g) => g.end ? areIntervalsOverlapping(
+        filterInterval, { start: g.start, end: g.end }, { inclusive: true }
+      ) : isWithinInterval(g.start, filterInterval)).length,
+      hoursCount: props.data.filter((g) => g.end ? areIntervalsOverlapping(
+        filterInterval, { start: g.start, end: g.end }, { inclusive: true }
+      ) : isWithinInterval(g.start, filterInterval)).reduce((acum, g) => acum + (g.hours || 0), 0),
       hourChart: {
         labels: dataIntervals.map((di) => di.label),
         values: dataIntervals.map((di) => Math.round(di.hours)),
@@ -207,13 +212,13 @@ export const ChartComponent: React.FC<ChartProps> = (props) => {
   }, [props.data, seeHistory, interval])
 
   return (
-    <FlexSection>
+    <FlexSection direction='column'>
       <styles.Filters>
         <div className="filters">
           <div className="range-container">
-            <Button disabled={seeHistory} icon={<LeftCircleOutlined />} onClick={() => setInterval(subYears(interval, 1))} />
+            <Button disabled={seeHistory || getYear(interval) <= MIN_YEAR} icon={<LeftCircleOutlined />} onClick={() => setInterval(subYears(interval, 1))} />
             <span className="value">{seeHistory ? "-" : format(interval, "yyyy")}</span>
-            <Button disabled={seeHistory} icon={<RightCircleOutlined />} onClick={() => setInterval(addYears(interval, 1))} />
+            <Button disabled={seeHistory || getYear(interval) >= MAX_YEAR} icon={<RightCircleOutlined />} onClick={() => setInterval(addYears(interval, 1))} />
           </div>
           <div className="history">
             <span>See complete history</span>&nbsp;<Switch onChange={(checked) => setSeeHistory(checked)} />

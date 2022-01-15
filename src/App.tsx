@@ -1,27 +1,28 @@
 import 'antd/dist/antd.css';
 import { Divider } from 'antd';
-import { data, GameTag } from './data'
+import { GameTag } from './data'
 import { useMemo } from 'react'
 import { Tags } from './components/Tags';
 import { State } from './components/State';
 import { Achievements } from './components/Achievements'
-import { format, getYear, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import { Score, ScoreHeader } from './components/Score'
 import GlobalStyles from './styles/GlobalStyles';
 import { ChartComponent } from './components/Chart';
-import Table from './ui/Table';
+import Table, { TableFiltersType, TablePaginationType } from './ui/Table';
+import { useQuery } from './back/dataQuery';
+import { filterDropdownFactoryCheckbox } from './ui/TableFIlters';
 
 function App() {
+  const { data, rawData, refetch } = useQuery()
+
   const dataSource = useMemo(() => {
     if (!data) return []
     return data.map((g) => {
-      const start = parseISO(g.start)
-      const end = g.end ? parseISO(g.end) : undefined
       return {
         name: g.name,
-        rowClassName: getYear(start) % 2 === 0 ? 'even-row' : 'odd-row',
-        start: format(start, "dd MMM yyyy"),
-        end: end ? format(end, "dd MMM yyyy") : undefined,
+        start: format(g.start, "dd MMM yyyy"),
+        end: g.end ? format(g.end, "dd MMM yyyy") : undefined,
         state: <State state={g.state} />,
         hours: g.hours,
         achievements: g.achievements ? <Achievements obtained={g.achievements[0]} total={g.achievements[1]} /> : undefined,
@@ -30,36 +31,45 @@ function App() {
         rawTags: g.tags,
       }
     })
-  }, [])
+  }, [data])
 
   const gameTags = useMemo(() => {
-    return Object.keys(GameTag).filter(key => !isNaN(Number(key))).map(key => ({ text: GameTag[Number(key)], value: key }))
+    return Object.keys(GameTag).filter(key => !isNaN(Number(key))).map(key => ({ label: GameTag[Number(key)], value: key }))
   }, [])
+
+  console.log(data.length)
+
+  const handleTableChange = (_pagination: TablePaginationType, filters: TableFiltersType) => {
+    console.log(filters)
+    refetch({
+      tags_in: filters.tags?.map((tag) => Number(tag))
+    })
+  }
 
   return (
     <>
       <GlobalStyles />
-      <ChartComponent data={data} />
+      <ChartComponent data={rawData} />
       <Divider />
       <Table
         dataSource={dataSource}
         rowKey="name"
         size="small"
+        onChange={handleTableChange}
         pagination={false}
-        rowClassName={(record) => record.rowClassName}
       >
         <Table.Column title="Name" dataIndex="name" />
         <Table.Column title="Start" dataIndex="start" />
         <Table.Column title="End" dataIndex="end" />
         <Table.Column title="State" dataIndex="state" />
-        <Table.Column width={50} title="Hours" dataIndex="hours" />
+        <Table.Column title="Hours" dataIndex="hours" />
         <Table.Column title="Achievements" dataIndex="achievements" />
         <Table.Column
           title="Tags"
           dataIndex="tags"
-          filters={gameTags}
-          onFilter={(filter, record: { rawTags: GameTag[] }) =>
-            record.rawTags.includes(Number(filter))}
+          filterDropdown={filterDropdownFactoryCheckbox({
+            options: gameTags,
+          })}
         />
         <Table.Column title={<ScoreHeader />} dataIndex="score" />
       </Table>
