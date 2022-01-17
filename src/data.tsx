@@ -55,8 +55,9 @@ export const data: Array<GameI> = [
   {
     name: "Environmental station alpha",
     start: "2022-01-09",
-    hours: 3.6,
-    state: GameState.Playing,
+    end: "2022-01-15",
+    hours: 4.4,
+    state: GameState.Dropped,
     tags: [GameTag.Metroidvania],
   },
   {

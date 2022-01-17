@@ -9,12 +9,12 @@ import { format } from 'date-fns';
 import { Score, ScoreHeader } from './components/Score'
 import GlobalStyles from './styles/GlobalStyles';
 import { ChartComponent } from './components/Chart';
-import Table, { TableFiltersType, TablePaginationType } from './ui/Table';
+import Table, { getPaginationProps, paginationToQuery, sorterToQuery, TableFiltersType, TablePaginationType, TableSorterType } from './ui/Table';
 import { useQuery } from './back/dataQuery';
 import { filterDropdownFactoryCheckbox } from './ui/TableFIlters';
 
 function App() {
-  const { data, rawData, refetch } = useQuery()
+  const { data, dataLength, rawData, refetch } = useQuery({ first: 50, orderBy: "end_desc" })
 
   const dataSource = useMemo(() => {
     if (!data) return []
@@ -37,14 +37,38 @@ function App() {
     return Object.keys(GameTag).filter(key => !isNaN(Number(key))).map(key => ({ label: GameTag[Number(key)], value: key }))
   }, [])
 
-  console.log(data.length)
-
-  const handleTableChange = (_pagination: TablePaginationType, filters: TableFiltersType) => {
-    console.log(filters)
+  const handleTableChange = (pagination: TablePaginationType, filters: TableFiltersType, sorter: TableSorterType) => {
+    console.log(pagination, filters, sorter)
     refetch({
-      tags_in: filters.tags?.map((tag) => Number(tag))
+      tags_in: filters.tags?.map((tag) => Number(tag)),
+      ...paginationToQuery(pagination),
+      orderBy: sorterToQuery(sorter),
     })
   }
+
+  const mockedData = [
+    {
+      key: '1',
+      name: 'John Brown',
+      age: 32,
+      address: 'New York No. 1 Lake Park',
+      tags: ['nice', 'developer'],
+    },
+    {
+      key: '2',
+      name: 'Jim Green',
+      age: 42,
+      address: 'London No. 1 Lake Park',
+      tags: ['loser'],
+    },
+    {
+      key: '3',
+      name: 'Joe Black',
+      age: 32,
+      address: 'Sidney No. 1 Lake Park',
+      tags: ['cool', 'teacher'],
+    },
+  ];
 
   return (
     <>
@@ -52,15 +76,16 @@ function App() {
       <ChartComponent data={rawData} />
       <Divider />
       <Table
-        dataSource={dataSource}
-        rowKey="name"
-        size="small"
-        onChange={handleTableChange}
+        dataSource={mockedData}
+        //rowKey="name"
+        //onChange={handleTableChange}
+        //pagination={getPaginationProps(dataLength)}
         pagination={false}
       >
         <Table.Column title="Name" dataIndex="name" />
-        <Table.Column title="Start" dataIndex="start" />
-        <Table.Column title="End" dataIndex="end" />
+        <Table.Column title="Age" dataIndex="age" />
+        {/*<Table.Column sorter title="Start" dataIndex="start" />
+        <Table.Column sorter defaultSortOrder="descend" title="End" dataIndex="end" />
         <Table.Column title="State" dataIndex="state" />
         <Table.Column title="Hours" dataIndex="hours" />
         <Table.Column title="Achievements" dataIndex="achievements" />
@@ -72,6 +97,7 @@ function App() {
           })}
         />
         <Table.Column title={<ScoreHeader />} dataIndex="score" />
+        */}
       </Table>
       </>
   )
