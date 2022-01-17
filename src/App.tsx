@@ -11,7 +11,7 @@ import GlobalStyles from './styles/GlobalStyles';
 import { ChartComponent } from './components/Chart';
 import Table, { getPaginationProps, paginationToQuery, sorterToQuery, TableFiltersType, TablePaginationType, TableSorterType } from './ui/Table';
 import { useQuery } from './back/dataQuery';
-import { filterDropdownFactoryCheckbox } from './ui/TableFIlters';
+import { filterDropdownFactoryCheckbox, filterDropdownFactoryStr } from './ui/TableFIlters';
 
 function App() {
   const { data, dataLength, rawData, refetch } = useQuery({ first: 50, orderBy: "end_desc" })
@@ -82,8 +82,8 @@ function App() {
         //pagination={getPaginationProps(dataLength)}
         pagination={false}
       >
-        <Table.Column title="Name" dataIndex="name" />
-        <Table.Column title="Age" dataIndex="age" />
+        <Table.Column filterDropdown={filterDropdownFactoryStr()} title="Name" dataIndex="name" />
+        <Table.Column sorter title="Age" dataIndex="age" />
         {/*<Table.Column sorter title="Start" dataIndex="start" />
         <Table.Column sorter defaultSortOrder="descend" title="End" dataIndex="end" />
         <Table.Column title="State" dataIndex="state" />

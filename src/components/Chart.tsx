@@ -159,7 +159,15 @@ export const ChartComponent: React.FC<ChartProps> = (props) => {
     }).forEach((g) => {
       if (g.state !== GameState.Dropped && g.state !== GameState.Banned) {
         g.tags.forEach((t) => {
-          tagsData[t] = (tagsData[t] || 0) + (g.hours || 1)
+          const gameInterval = {
+            start: g.start,
+            end: g.end ? g.end : endOfDay(g.start),
+          }
+          const days = g.end ? differenceInDays(gameInterval.end, gameInterval.start) || 1 : 1
+          const overlappingDays = getOverlappingDaysInIntervals(gameInterval, { start: filterInterval.start, end: filterInterval.end }) || 1
+          const percentage = overlappingDays / days
+          //return acum + (g.hours || 0) * percentage
+          tagsData[t] = (tagsData[t] || 0) + (g.hours || 0) * percentage
         })
       }
       stateData[g.state] = (stateData[g.state] || 0) + 1

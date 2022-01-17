@@ -10,37 +10,37 @@ const Table: React.FC = ({ children, ...props }) => {
       console.log(child)
     }
   })
-  return <div {...props}>{subRows}</div>
+  return <div id="table" {...props}>{subRows}</div>
 }
 
 const HeaderWrapper: React.FC = (props) => {
   console.log({ HeaderWrapperProps: props })
-  return <div>{props.children}</div>
+  return <div id="headerWrapper">{props.children}</div>
 }
 
 const HeaderRow: React.FC = (props) => {
   console.log({ HeaderRowProps: props })
-  return <div>{props.children}</div>
+  return <div id="headerRow">{props.children}</div>
 }
 
 const HeaderCell: React.FC = (props) => {
   console.log({ HeaderCellProps: props })
-  return <div>{props.children}</div>
+  return <div id="headerCell">{props.children}</div>
 }
 
 const BodyWrapper: React.FC = (props) => {
   console.log({ BodyWrapperProps: props })
-  return <div>{props.children}</div>
+  return <div id="bodyWrapper">{props.children}</div>
 }
 
 const BodyRow: React.FC = (props) => {
   console.log({ BodyRowProps: props })
-  return <div>{props.children}</div>
+  return <div id="bodyRow">{props.children}</div>
 }
 
 const BodyCell: React.FC = (props) => {
   console.log({ BodyCellProps: props })
-  return <div>{props.children}</div>
+  return <div id="bodyCell">{props.children}</div>
 }
 
 const TableMobileComponents = {
