@@ -1,8 +1,11 @@
 import styled from 'styled-components'
 import { ColumnProps, TablePaginationConfig } from 'antd/lib/table'
 import { FilterValue, SorterResult } from 'antd/lib/table/interface'
-import { PaginationProps, Table as AntTable, TableProps } from 'antd'
+import { Form, PaginationProps, Table as AntTable, TableProps } from 'antd'
 import TableMobileComponents from './MobileTable'
+import { useIsMobile } from '../styles/Resolutions'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+import React from 'react'
 
 const StyledTable = styled(AntTable)`
   && {
@@ -227,17 +230,27 @@ interface CustomTableProps {
   showPagination?: boolean
 }
 
-type TableType = React.FC<TableProps<any> & CustomTableProps> & {
+//React.ForwardRefExoticComponent<CustomProps & React.RefAttributes<any>>
+type ForwardTableProps = TableProps<any> & CustomTableProps
+export type ForwardTableRef = {
+  toggleColor: () => void
+}
+type TableType = React.ForwardRefExoticComponent<ForwardTableProps & ForwardTableRef> & {
   Column: <RecordType>(_: ColumnProps<RecordType>) => null
 }
 
-const Table: TableType = ({ showPagination, pagination, ...props }) => {
+const Table: TableType = Object.assign(React.forwardRef<ForwardTableRef, ForwardTableProps>(({ showPagination, pagination, ...props }, ref) => {
+  const isMobile = useIsMobile()
+  useImperativeHandle(ref, () => ({
+    toggleColor: () => console.log("wuewue")
+  }));
   return <StyledTable
     pagination={showPagination ? paginationProps : pagination}
     components={TableMobileComponents}
     {...props}
   />
-}
-Table.Column = AntTable.Column
+}), {
+  Column: AntTable.Column
+})
 
 export default Table
