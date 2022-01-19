@@ -9,9 +9,10 @@ import { format } from 'date-fns';
 import { Score, ScoreHeader } from './components/Score'
 import GlobalStyles from './styles/GlobalStyles';
 import { ChartComponent } from './components/Chart';
-import Table, { getPaginationProps, paginationToQuery, sorterToQuery, TableFiltersType, TablePaginationType, TableSorterType } from './ui/Table';
+import Table, { ForwardTableRef, getPaginationProps, paginationToQuery, sorterToQuery, TableFiltersType, TablePaginationType, TableSorterType } from './ui/Table';
 import { useQuery } from './back/dataQuery';
 import { filterDropdownFactoryCheckbox, filterDropdownFactoryStr } from './ui/TableFIlters';
+import React from 'react';
 
 function App() {
   const { data, dataLength, rawData, refetch } = useQuery({ first: 50, orderBy: "end_desc" })
@@ -61,14 +62,9 @@ function App() {
       address: 'London No. 1 Lake Park',
       tags: ['loser'],
     },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
-    },
   ];
+
+  const ref = React.useRef<ForwardTableRef>(null); // assign null makes it compatible with elements.
 
   return (
     <>
@@ -76,6 +72,7 @@ function App() {
       <ChartComponent data={rawData} />
       <Divider />
       <Table
+        ref={ref}
         dataSource={mockedData}
         //rowKey="name"
         //onChange={handleTableChange}

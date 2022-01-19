@@ -4,7 +4,7 @@ import { FilterValue, SorterResult } from 'antd/lib/table/interface'
 import { Form, PaginationProps, Table as AntTable, TableProps } from 'antd'
 import TableMobileComponents from './MobileTable'
 import { useIsDesktop, useIsMobile } from '../styles/Resolutions'
-import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react'
 import React from 'react'
 
 const StyledTable = styled(AntTable)`
@@ -235,7 +235,7 @@ type ForwardTableProps = TableProps<any> & CustomTableProps
 export type ForwardTableRef = {
   toggleColor: () => void
 }
-type TableType = React.ForwardRefExoticComponent<ForwardTableProps & ForwardTableRef> & {
+type TableType = React.ForwardRefExoticComponent<ForwardTableProps & React.RefAttributes<ForwardTableRef>> & {
   Column: <RecordType>(_: ColumnProps<RecordType>) => null
 }
 
@@ -244,12 +244,21 @@ const Table: TableType = Object.assign(React.forwardRef<ForwardTableRef, Forward
   useImperativeHandle(ref, () => ({
     toggleColor: () => console.log("wuewue")
   }));
-  React.Children.forEach(props.children, (child: any, i) => {
-    console.log(child)
-  })
+  const columns = useMemo(() => {
+    const columns: any[] = []
+    if (!isDesktop) {
+      React.Children.forEach(props.children, (child, i) => {
+        if (typeof(child) === "object") {
+          if ((child as any)?.type?.name === "Column") {
+            columns.push((child as any).props);
+          }
+        }
+        console.log(child)
+      })
+    }
+  }, [isDesktop])
   return isDesktop ? <StyledTable
     pagination={showPagination ? paginationProps : pagination}
-    components={TableMobileComponents}
     {...props}
   /> : <div>tablita mobile</div>
 }), {
