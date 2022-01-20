@@ -15,7 +15,7 @@ import { filterDropdownFactoryCheckbox, filterDropdownFactoryStr } from './ui/Ta
 import React from 'react';
 
 function App() {
-  const { data, dataLength, rawData, refetch } = useQuery({ first: 50, orderBy: "end_desc" })
+  const { data, dataLength, rawData, refetch } = useQuery({ first: 48, orderBy: "end_desc" })
 
   const dataSource = useMemo(() => {
     if (!data) return []

@@ -1,5 +1,9 @@
 import { ColumnProps, TablePaginationConfig } from "antd/lib/table";
-import { FilterValue, SorterResult } from "antd/lib/table/interface";
+import {
+  FilterValue,
+  SorterResult,
+  TableCurrentDataSource,
+} from "antd/lib/table/interface";
 import {
   Pagination,
   PaginationProps,
@@ -8,7 +12,7 @@ import {
 } from "antd";
 import { MobileTable, MobileTableCell, MobileTableRow } from "./MobileTable";
 import { useIsDesktop } from "../styles/Resolutions";
-import { useImperativeHandle, useMemo, useState } from "react";
+import { useEffect, useImperativeHandle, useMemo, useState } from "react";
 import React from "react";
 import { TableContainer } from "../styles/TableStyles";
 
@@ -16,6 +20,7 @@ export const paginationProps: PaginationProps = {
   showTotal: (total) => `Total ${total} items`,
   size: "small",
   showSizeChanger: true,
+  pageSizeOptions: ['12', '24', '48', '96']
 };
 
 interface paginationPropsFunctionI {
@@ -29,15 +34,16 @@ export const getPaginationProps: paginationPropsFunctionI = (
     showTotal: (total) => `Total ${total} items`,
     size: "small",
     total: totalItems,
-    defaultPageSize: 50,
+    defaultPageSize: 48,
     showSizeChanger: true,
+    pageSizeOptions: ['12', '24', '48', '96']
   };
 };
 
 export const paginationToQuery = (pagination: TablePaginationConfig) => {
   return {
-    skip: ((pagination.current || 1) - 1) * (pagination.pageSize || 50),
-    first: pagination.pageSize || 50,
+    skip: ((pagination.current || 1) - 1) * (pagination.pageSize || 48),
+    first: pagination.pageSize || 48,
   };
 };
 
@@ -66,7 +72,7 @@ interface FilterBoolType {
 type FilterType = FilterStringType | FilterBoolType;
 
 interface CustomTableProps {
-  showPagination?: boolean;
+  frontPagination?: boolean;
 }
 
 interface CustomColumnProps<RecordType> extends ColumnProps<RecordType> {
@@ -81,7 +87,8 @@ const Column = <RecordType extends unknown>({
 //React.ForwardRefExoticComponent<CustomProps & React.RefAttributes<any>>
 type ForwardTableProps = TableProps<any> & CustomTableProps;
 export type ForwardTableRef = {
-  toggleColor: () => void;
+  getPagination: TablePaginationConfig;
+  setPagination: React.Dispatch<React.SetStateAction<TablePaginationConfig>>;
 };
 type TableType = React.ForwardRefExoticComponent<
   ForwardTableProps & React.RefAttributes<ForwardTableRef>
@@ -94,19 +101,45 @@ type TableType = React.ForwardRefExoticComponent<
 
 const Table: TableType = Object.assign(
   React.forwardRef<ForwardTableRef, ForwardTableProps>(
-    ({ showPagination, pagination, ...props }, ref) => {
+    ({ frontPagination, pagination, onChange: onTableChange, ...props }, ref) => {
       const isDesktop = useIsDesktop();
-      const [pagi, setPagi] = useState<TablePaginationType>({
-        current: 1,
-        defaultPageSize: 50,
-        pageSize: 50,
-        showSizeChanger: true,
-        size: "small",
-        total: 20,
-      })
+      const [tablePagination, setTablePagination] =
+        useState<TablePaginationType>(pagination || paginationProps);
+
       useImperativeHandle(ref, () => ({
-        toggleColor: () => console.log("wuewue"),
+        getPagination: tablePagination,
+        setPagination: setTablePagination,
       }));
+
+      useEffect(() => {
+        if (pagination && pagination.total !== tablePagination.total) {
+          const newTablePagination = {
+            ...tablePagination,
+            total: pagination.total,
+          }
+          if (tablePagination.current && tablePagination.pageSize && pagination.total &&
+            tablePagination.current * tablePagination.pageSize > pagination.total
+          ) {
+            newTablePagination.current = 1
+            onTableChange?.(newTablePagination, {}, {}, {} as any)
+          }
+          setTablePagination(newTablePagination)
+        }
+      }, [onTableChange, pagination, tablePagination])
+
+      const onPaginationChange = (page: number, pageSize: number) => {
+        setTablePagination(pagination)
+      }
+
+      const handleTableChange = (
+        pagination: TablePaginationType,
+        filters: TableFiltersType,
+        sorter: TableSorterType,
+        extra: TableCurrentDataSource<any>
+      ) => {
+        console.log(pagination, filters, sorter, extra);
+        onTableChange?.(pagination, filters, sorter, extra);
+      };
 
       const columns = useMemo(() => {
         const columns: any[] = [];
@@ -123,12 +156,13 @@ const Table: TableType = Object.assign(
         return columns;
       }, [isDesktop, props.children]);
 
-      console.log({ paginationProps, pagination })
+      console.log({ paginationProps, pagination });
       return (
         <TableContainer>
           {isDesktop ? (
             <AntTable
-              pagination={showPagination ? paginationProps : pagination}
+              onChange={handleTableChange}
+              pagination={frontPagination ? paginationProps : pagination}
               {...props}
             />
           ) : (
@@ -153,8 +187,12 @@ const Table: TableType = Object.assign(
                   </MobileTableRow>
                 ))}
               </MobileTable>
-              {showPagination || pagination ? (
-                <Pagination className="ant-table-pagination ant-table-pagination-right" {...(pagination || paginationProps)} />
+              {frontPagination || pagination ? (
+                <Pagination
+                  className="ant-table-pagination ant-table-pagination-right"
+                  onChange={}
+                  {...(pagination || paginationProps)}
+                />
               ) : undefined}
             </>
           )}
