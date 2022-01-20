@@ -52,7 +52,7 @@ export const Background = styled.div<{ state: GameState }>`
         font-weight: bolder;
     `}
     border-radius: 20px;
-    padding: 4px;
+    padding: 4px 8px;
 `
 
 export const State = (props: { state: GameState }) => {

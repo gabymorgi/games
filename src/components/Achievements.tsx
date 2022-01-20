@@ -10,7 +10,7 @@ const Background = styled.div<{ obtained: number; total: number }>`
     background: #600060;
     width: 100%;
     border-radius: 4px;
-    padding: 4px;
+    padding: 4px 12px;
 
     &:after {
         content: " ";

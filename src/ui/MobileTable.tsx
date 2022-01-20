@@ -1,60 +1,51 @@
-import React from "react";
+import styled from "styled-components";
+import { MAX_MD_SIZE, MAX_SM_SIZE } from "../styles/Resolutions";
 
-const Table: React.FC = ({ children, ...props }) => {
-  console.log({ tableProps: props })
-  const subRows: React.ReactNode[] = [];
-  React.Children.forEach(children, (child: any, i) => {
-    if (child?.type?.name !== "ColGroup") {
-      subRows.push(child)
-    } else {
-      console.log(child)
-    }
-  })
-  return <div id="table" {...props}>{subRows}</div>
-}
-
-const HeaderWrapper: React.FC = (props) => {
-  console.log({ HeaderWrapperProps: props })
-  return <div id="headerWrapper">{props.children}</div>
-}
-
-const HeaderRow: React.FC = (props) => {
-  console.log({ HeaderRowProps: props })
-  return <div id="headerRow">{props.children}</div>
-}
-
-const HeaderCell: React.FC = (props) => {
-  console.log({ HeaderCellProps: props })
-  return <div id="headerCell">{props.children}</div>
-}
-
-const BodyWrapper: React.FC = (props) => {
-  console.log({ BodyWrapperProps: props })
-  return <div id="bodyWrapper">{props.children}</div>
-}
-
-const BodyRow: React.FC = (props) => {
-  console.log({ BodyRowProps: props })
-  return <div id="bodyRow">{props.children}</div>
-}
-
-const BodyCell: React.FC = (props) => {
-  console.log({ BodyCellProps: props })
-  return <div id="bodyCell">{props.children}</div>
-}
-
-const TableMobileComponents = {
-  table: Table,
-  header: {
-    wrapper: HeaderWrapper,
-    row: HeaderRow,
-    cell: HeaderCell,
-  },
-  body: {
-    wrapper: BodyWrapper,
-    row: BodyRow,
-    cell: BodyCell,
+export const MobileTable = styled.div`
+  display: grid;
+  gap: 20px 20px;
+  color: #eee;
+  background-color: black;
+  @media (max-width: ${MAX_MD_SIZE}px) {
+    grid-template-columns: repeat(2, 50%);
   }
-}
+  @media (max-width: ${MAX_SM_SIZE}px) {
+    grid-template-columns: 100%;
+  }
+`
 
-export default TableMobileComponents
+export const MobileTableRow = styled.div`
+  border: 1px solid #333;
+  border-radius: 8px;
+  align-self: baseline;
+`
+
+export const MobileTableCell = styled.div`
+  padding: 8px;
+  background: #222;
+  display: flex;
+  justify-content: space-between;
+  column-gap: 32px;
+  &:first-child {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  &:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  &:nth-child(2n + 1) {
+    background: #111;
+  }
+  .label {
+    font-weight: bold;
+  }
+  .value {
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+    > * {
+      justify-content: flex-end;
+    }
+  }
+`

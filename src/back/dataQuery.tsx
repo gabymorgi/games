@@ -59,9 +59,10 @@ export function useQuery(initialVariables?: variablesI) {
           break
       }
     }
+    const length = filteredData.length
     filteredData = filteredData.slice(variables?.skip || 0, variables?.first ? (variables.skip || 0) + variables.first : filteredData.length)
 
-    return [filteredData, filteredData.length]
+    return [filteredData, length]
   }, [parsedData, variables])
 
   return { rawData: parsedData, data, dataLength, refetch: setVariables }

@@ -5,5 +5,6 @@ export default createGlobalStyle`
     background-color: #000;
     color: #FFF;
     padding: 20px;
+    height: unset;
   }
 `

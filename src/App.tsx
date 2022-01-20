@@ -47,23 +47,6 @@ function App() {
     })
   }
 
-  const mockedData = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
-    },
-  ];
-
   const ref = React.useRef<ForwardTableRef>(null); // assign null makes it compatible with elements.
 
   return (
@@ -73,15 +56,13 @@ function App() {
       <Divider />
       <Table
         ref={ref}
-        dataSource={mockedData}
-        //rowKey="name"
-        //onChange={handleTableChange}
-        //pagination={getPaginationProps(dataLength)}
-        pagination={false}
+        dataSource={dataSource}
+        rowKey="name"
+        onChange={handleTableChange}
+        pagination={getPaginationProps(dataLength)}
       >
         <Table.Column filterDropdown={filterDropdownFactoryStr()} title="Name" dataIndex="name" />
-        <Table.Column sorter title="Age" dataIndex="age" />
-        {/*<Table.Column sorter title="Start" dataIndex="start" />
+        <Table.Column sorter title="Start" dataIndex="start" />
         <Table.Column sorter defaultSortOrder="descend" title="End" dataIndex="end" />
         <Table.Column title="State" dataIndex="state" />
         <Table.Column title="Hours" dataIndex="hours" />
@@ -94,7 +75,6 @@ function App() {
           })}
         />
         <Table.Column title={<ScoreHeader />} dataIndex="score" />
-        */}
       </Table>
       </>
   )

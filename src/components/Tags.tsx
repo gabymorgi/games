@@ -10,8 +10,8 @@ const Tag = styled.div<{ colorH: number }>`
     `}
     font-weight: bold;
     border-radius: 20px;
-    padding-left: 4px;
-    padding-right: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
 `
 
 export const tagToString: {[key in GameTag]: { label: string; color: number } } = {
