@@ -16,27 +16,22 @@ import { useEffect, useImperativeHandle, useMemo, useState } from "react";
 import React from "react";
 import { TableContainer } from "../styles/TableStyles";
 
-export const paginationProps: PaginationProps = {
-  showTotal: (total) => `Total ${total} items`,
-  size: "small",
-  showSizeChanger: true,
-  pageSizeOptions: ['12', '24', '48', '96']
-};
-
 interface paginationPropsFunctionI {
-  (totalItems: number): PaginationProps;
+  (currentPage: number, totalItems: number): PaginationProps;
 }
 
 export const getPaginationProps: paginationPropsFunctionI = (
+  currentPage: number,
   totalItems: number
 ) => {
   return {
     showTotal: (total) => `Total ${total} items`,
     size: "small",
+    current: currentPage,
     total: totalItems,
     defaultPageSize: 48,
     showSizeChanger: true,
-    pageSizeOptions: ['12', '24', '48', '96']
+    pageSizeOptions: ["12", "24", "48", "96"],
   };
 };
 
@@ -72,7 +67,8 @@ interface FilterBoolType {
 type FilterType = FilterStringType | FilterBoolType;
 
 interface CustomTableProps {
-  frontPagination?: boolean;
+  hidePagination?: boolean;
+  paginationTotalItems?: number;
 }
 
 interface CustomColumnProps<RecordType> extends ColumnProps<RecordType> {
@@ -85,7 +81,7 @@ const Column = <RecordType extends unknown>({
 }: CustomColumnProps<RecordType>) => <AntTable.Column {...props} />;
 
 //React.ForwardRefExoticComponent<CustomProps & React.RefAttributes<any>>
-type ForwardTableProps = TableProps<any> & CustomTableProps;
+type ForwardTableProps = Omit<TableProps<any>, "pagination"> & CustomTableProps;
 export type ForwardTableRef = {
   getPagination: TablePaginationConfig;
   setPagination: React.Dispatch<React.SetStateAction<TablePaginationConfig>>;
@@ -101,10 +97,23 @@ type TableType = React.ForwardRefExoticComponent<
 
 const Table: TableType = Object.assign(
   React.forwardRef<ForwardTableRef, ForwardTableProps>(
-    ({ frontPagination, pagination, onChange: onTableChange, ...props }, ref) => {
+    (
+      {
+        paginationTotalItems,
+        hidePagination,
+        onChange: onTableChange,
+        ...props
+      },
+      ref
+    ) => {
       const isDesktop = useIsDesktop();
       const [tablePagination, setTablePagination] =
-        useState<TablePaginationType>(pagination || paginationProps);
+        useState<TablePaginationType>(
+          getPaginationProps(
+            1,
+            paginationTotalItems || props.dataSource?.length || 0
+          )
+        );
 
       useImperativeHandle(ref, () => ({
         getPagination: tablePagination,
@@ -112,24 +121,43 @@ const Table: TableType = Object.assign(
       }));
 
       useEffect(() => {
-        if (pagination && pagination.total !== tablePagination.total) {
+        if (
+          paginationTotalItems &&
+          paginationTotalItems !== tablePagination.total
+        ) {
           const newTablePagination = {
             ...tablePagination,
-            total: pagination.total,
-          }
-          if (tablePagination.current && tablePagination.pageSize && pagination.total &&
-            tablePagination.current * tablePagination.pageSize > pagination.total
+            total: paginationTotalItems,
+          };
+          if (
+            tablePagination.current &&
+            tablePagination.pageSize &&
+            paginationTotalItems &&
+            tablePagination.current * tablePagination.pageSize >
+              paginationTotalItems
           ) {
-            newTablePagination.current = 1
-            onTableChange?.(newTablePagination, {}, {}, {} as any)
+            newTablePagination.current = 1;
+            onTableChange?.(newTablePagination, {}, {}, {} as any);
           }
-          setTablePagination(newTablePagination)
+          setTablePagination(newTablePagination);
         }
-      }, [onTableChange, pagination, tablePagination])
+      }, [onTableChange, paginationTotalItems, tablePagination]);
 
       const onPaginationChange = (page: number, pageSize: number) => {
-        setTablePagination(pagination)
-      }
+        console.log(page, pageSize);
+        const newTablePagination = {
+          ...tablePagination,
+          pageSize,
+          current: page,
+        };
+        setTablePagination(newTablePagination);
+        onTableChange?.(
+          newTablePagination,
+          {},
+          {},
+          { action: "paginate", currentDataSource: [] }
+        );
+      };
 
       const handleTableChange = (
         pagination: TablePaginationType,
@@ -138,66 +166,74 @@ const Table: TableType = Object.assign(
         extra: TableCurrentDataSource<any>
       ) => {
         console.log(pagination, filters, sorter, extra);
+        switch (extra.action) {
+          case "paginate":
+            setTablePagination(pagination);
+        }
         onTableChange?.(pagination, filters, sorter, extra);
       };
 
       const columns = useMemo(() => {
         const columns: any[] = [];
         if (!isDesktop) {
-          React.Children.forEach(props.children, (child, i) => {
+          React.Children.forEach(props.children, (child) => {
             if (typeof child === "object") {
               if ((child as any)?.type?.name === "Column") {
                 columns.push((child as any).props);
               }
             }
-            console.log(child);
+            console.log((child as any)?.type, (child as any)?.type?.name);
           });
         }
         return columns;
       }, [isDesktop, props.children]);
 
-      console.log({ paginationProps, pagination });
-      return (
-        <TableContainer>
-          {isDesktop ? (
+      console.log(columns)
+
+      if (isDesktop) {
+        return (
+          <TableContainer>
             <AntTable
               onChange={handleTableChange}
-              pagination={frontPagination ? paginationProps : pagination}
+              pagination={hidePagination ? false : tablePagination}
               {...props}
             />
-          ) : (
-            <>
-              <MobileTable>
-                {props.dataSource?.map((row) => (
-                  <MobileTableRow
-                    key={
-                      props.rowKey
-                        ? typeof props.rowKey === "string"
-                          ? row[props.rowKey]
-                          : props.rowKey(row)
-                        : row.key
-                    }
-                  >
-                    {columns.map((column) => (
-                      <MobileTableCell key={column.dataIndex || column.title}>
-                        <div className="label">{column.title}</div>
-                        <div className="value">{row[column.dataIndex]}</div>
-                      </MobileTableCell>
-                    ))}
-                  </MobileTableRow>
-                ))}
-              </MobileTable>
-              {frontPagination || pagination ? (
-                <Pagination
-                  className="ant-table-pagination ant-table-pagination-right"
-                  onChange={}
-                  {...(pagination || paginationProps)}
-                />
-              ) : undefined}
-            </>
-          )}
-        </TableContainer>
-      );
+          </TableContainer>
+        );
+      } else {
+        const sliceData = paginationToQuery(tablePagination)
+        return (
+          <TableContainer>
+            <MobileTable>
+              {(hidePagination ? props.dataSource : props.dataSource?.slice(sliceData.skip, sliceData.skip + sliceData.first))?.map((row) => (
+                <MobileTableRow
+                  key={
+                    props.rowKey
+                      ? typeof props.rowKey === "string"
+                        ? row[props.rowKey]
+                        : props.rowKey(row)
+                      : row.key
+                  }
+                >
+                  {columns.map((column) => (
+                    <MobileTableCell key={column.dataIndex || column.title}>
+                      <div className="label">{column.title}</div>
+                      <div className="value">{row[column.dataIndex]}</div>
+                    </MobileTableCell>
+                  ))}
+                </MobileTableRow>
+              ))}
+            </MobileTable>
+            {hidePagination ? undefined : (
+              <Pagination
+                className="ant-table-pagination ant-table-pagination-right"
+                onChange={onPaginationChange}
+                {...tablePagination}
+              />
+            )}
+          </TableContainer>
+        );
+      }
     }
   ),
   {

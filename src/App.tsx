@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 import { Score, ScoreHeader } from './components/Score'
 import GlobalStyles from './styles/GlobalStyles';
 import { ChartComponent } from './components/Chart';
-import Table, { ForwardTableRef, getPaginationProps, paginationToQuery, sorterToQuery, TableFiltersType, TablePaginationType, TableSorterType } from './ui/Table';
+import Table, { ForwardTableRef, paginationToQuery, sorterToQuery, TableFiltersType, TablePaginationType, TableSorterType } from './ui/Table';
 import { useQuery } from './back/dataQuery';
 import { filterDropdownFactoryCheckbox, filterDropdownFactoryStr } from './ui/TableFIlters';
 import React from 'react';
@@ -59,7 +59,7 @@ function App() {
         dataSource={dataSource}
         rowKey="name"
         onChange={handleTableChange}
-        pagination={getPaginationProps(dataLength)}
+        paginationTotalItems={dataLength}
       >
         <Table.Column filterDropdown={filterDropdownFactoryStr()} title="Name" dataIndex="name" />
         <Table.Column sorter title="Start" dataIndex="start" />
