@@ -61,7 +61,7 @@ function App() {
         onChange={handleTableChange}
         paginationTotalItems={dataLength}
       >
-        <Table.Column filterDropdown={filterDropdownFactoryStr()} title="Name" dataIndex="name" />
+        <Table.Column filter={{ type: "string" }} title="Name" dataIndex="name" />
         <Table.Column sorter title="Start" dataIndex="start" />
         <Table.Column sorter defaultSortOrder="descend" title="End" dataIndex="end" />
         <Table.Column title="State" dataIndex="state" />
@@ -70,9 +70,7 @@ function App() {
         <Table.Column
           title="Tags"
           dataIndex="tags"
-          filterDropdown={filterDropdownFactoryCheckbox({
-            options: gameTags,
-          })}
+          filter={{ type: "checkbox", options: gameTags }}
         />
         <Table.Column title={<ScoreHeader />} dataIndex="score" />
       </Table>

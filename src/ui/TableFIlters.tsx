@@ -190,3 +190,8 @@ export const parseFilterValueStr = (filter?: FilterValue | null) => filter?.[0] 
 export const parseFilterValueBool = (filter?: FilterValue | null) =>
   filter?.[0] === 'true' ? true : filter?.[0] === 'false' ? false : undefined
 export const parseFilterValueRadio = (filter?: FilterValue | null) => filter?.[0]
+
+export const valueToFilter = (value?: any) => (value ? [value] : [])
+export const manyValuesToFilter = (value?: any[]) => (value || [])
+export const valueBoolToFilter = (value?: boolean) =>
+  value === true ? ["true"] : value === false ? ["false"] : []

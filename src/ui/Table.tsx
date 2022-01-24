@@ -15,6 +15,7 @@ import { useIsDesktop } from "../styles/Resolutions";
 import { useEffect, useImperativeHandle, useMemo, useState } from "react";
 import React from "react";
 import { TableContainer } from "../styles/TableStyles";
+import TableFilterModal from "./TableFilterModal";
 
 interface paginationPropsFunctionI {
   (currentPage: number, totalItems: number): PaginationProps;
@@ -53,6 +54,7 @@ export const sorterToQuery = (
 export declare type TablePaginationType = TablePaginationConfig;
 export declare type TableFiltersType = Record<string, FilterValue | null>;
 export declare type TableSorterType = SorterResult<any> | SorterResult<any>[];
+type TableExtraType = TableCurrentDataSource<any>;
 
 interface FilterStringType {
   type: "string";
@@ -64,7 +66,34 @@ interface FilterBoolType {
   initialValue?: boolean;
 }
 
-type FilterType = FilterStringType | FilterBoolType;
+interface FilterRadioType {
+  type: "radio";
+  initialValue?: any;
+  options: Array<{
+    label: React.Key
+    value: React.Key
+  }>
+}
+
+interface FilterCheckboxType {
+  type: "checkbox";
+  initialValue?: any[];
+  options: Array<{
+    label: React.Key
+    value: React.Key
+  }>
+}
+
+interface FilterDateRangeType {
+  type: "dateRange";
+  initialValue?: [string, string];
+  allowEmptyEnd?: boolean
+  allowEmptyStart?: boolean
+  dropdownAlignTop?: boolean
+  showTime?: boolean
+}
+
+type FilterType = FilterStringType | FilterBoolType | FilterRadioType | FilterCheckboxType | FilterDateRangeType;
 
 interface CustomTableProps {
   hidePagination?: boolean;
@@ -102,6 +131,7 @@ const Table: TableType = Object.assign(
         paginationTotalItems,
         hidePagination,
         onChange: onTableChange,
+        columns: columnsProp,
         ...props
       },
       ref
@@ -114,6 +144,8 @@ const Table: TableType = Object.assign(
             paginationTotalItems || props.dataSource?.length || 0
           )
         );
+      const [tableFilters, setTableFilters] = useState<TableFiltersType>({})
+      const [columns, setColumns] = useState<ColumnsType<any>>()
 
       useImperativeHandle(ref, () => ({
         getPagination: tablePagination,
@@ -137,27 +169,11 @@ const Table: TableType = Object.assign(
               paginationTotalItems
           ) {
             newTablePagination.current = 1;
-            onTableChange?.(newTablePagination, {}, {}, {} as any);
+            onTableChange?.(newTablePagination, tableFilters, {}, { action: "paginate" } as TableExtraType);
           }
           setTablePagination(newTablePagination);
         }
-      }, [onTableChange, paginationTotalItems, tablePagination]);
-
-      const onPaginationChange = (page: number, pageSize: number) => {
-        console.log(page, pageSize);
-        const newTablePagination = {
-          ...tablePagination,
-          pageSize,
-          current: page,
-        };
-        setTablePagination(newTablePagination);
-        onTableChange?.(
-          newTablePagination,
-          {},
-          {},
-          { action: "paginate", currentDataSource: [] }
-        );
-      };
+      }, [onTableChange, paginationTotalItems, tableFilters, tablePagination]);
 
       const handleTableChange = (
         pagination: TablePaginationType,
@@ -169,24 +185,49 @@ const Table: TableType = Object.assign(
         switch (extra.action) {
           case "paginate":
             setTablePagination(pagination);
+            break
+          case "filter":
+            setTableFilters(filters)
+            break
         }
         onTableChange?.(pagination, filters, sorter, extra);
       };
 
-      const columns = useMemo(() => {
+      useEffect(() => {
         const columns: any[] = [];
-        if (!isDesktop) {
-          React.Children.forEach(props.children, (child) => {
-            if (typeof child === "object") {
-              if ((child as any)?.type?.name === "Column") {
-                columns.push((child as any).props);
-              }
+        React.Children.forEach(props.children, (child) => {
+          if (typeof child === "object") {
+            if ((child as any)?.type?.name === "Column") {
+              columns.push((child as any).props);
             }
-            console.log((child as any)?.type, (child as any)?.type?.name);
-          });
-        }
-        return columns;
-      }, [isDesktop, props.children]);
+          }
+          console.log((child as any)?.type, (child as any)?.type?.name);
+        });
+        setColumns(columns)
+      }, [props.children]);
+
+      useEffect(() => {
+        const filters: TableFiltersType = {}
+        if (!columns.length) return
+        console.log(columns)
+        columns.forEach((c) => {
+          if (c.filter) {
+            switch (c.filter.type) {
+              case "string":
+              case "radio":
+                filters[c.dataIndex || c.title] = c.filter.initialValue ? [c.filter.initialValue] : []
+                break
+              case "boolean":
+                filters[c.dataIndex || c.title] = c.filter.initialValue === true ? ["true"] : c.filter.initialValue === false ? ["false"] : []
+                break
+              default:
+                filters[c.dataIndex || c.title] = c.filter.initialValue
+                break
+            }
+          }
+        })
+        setTableFilters(filters)
+      }, [columns])
 
       console.log(columns)
 
@@ -196,14 +237,30 @@ const Table: TableType = Object.assign(
             <AntTable
               onChange={handleTableChange}
               pagination={hidePagination ? false : tablePagination}
+              columns={columns}
               {...props}
             />
           </TableContainer>
         );
       } else {
         const sliceData = paginationToQuery(tablePagination)
+        const onPaginationChange = (page: number, pageSize: number) => {
+          const newTablePagination = {
+            ...tablePagination,
+            pageSize,
+            current: page,
+          };
+          setTablePagination(newTablePagination);
+          onTableChange?.(
+            newTablePagination,
+            tableFilters,
+            {},
+            { action: "paginate" } as TableExtraType
+          );
+        };
         return (
           <TableContainer>
+            <TableFilterModal onFilter={() => console.log("asdf")} initialValues={tableFilters} filters={true} />
             <MobileTable>
               {(hidePagination ? props.dataSource : props.dataSource?.slice(sliceData.skip, sliceData.skip + sliceData.first))?.map((row) => (
                 <MobileTableRow

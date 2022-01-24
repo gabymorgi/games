@@ -759,7 +759,7 @@ export const data: Array<GameI> = [
     name: "A hat in a time",
     start: "2021-07-03",
     achievements: [3, 46],
-    state: GameState.Dropped,
+    state: GameState.Playing,
     tags: [GameTag.Platformer, GameTag.Collectathon],
   },
   {
