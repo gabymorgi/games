@@ -14,6 +14,9 @@ import { useQuery } from './back/dataQuery';
 import { filterDropdownFactoryCheckbox, filterDropdownFactoryStr } from './ui/TableFIlters';
 import React from 'react';
 
+const gameTags = Object.keys(GameTag).filter(key => !isNaN(Number(key))).map(key => ({ label: GameTag[Number(key)], value: key }))
+const sasdf = { type: "checkbox", options: gameTags }
+
 function App() {
   const { data, dataLength, rawData, refetch } = useQuery({ first: 48, orderBy: "end_desc" })
 
@@ -34,9 +37,7 @@ function App() {
     })
   }, [data])
 
-  const gameTags = useMemo(() => {
-    return Object.keys(GameTag).filter(key => !isNaN(Number(key))).map(key => ({ label: GameTag[Number(key)], value: key }))
-  }, [])
+  
 
   const handleTableChange = (pagination: TablePaginationType, filters: TableFiltersType, sorter: TableSorterType) => {
     console.log(pagination, filters, sorter)
@@ -61,7 +62,7 @@ function App() {
         onChange={handleTableChange}
         paginationTotalItems={dataLength}
       >
-        <Table.Column filter={{ type: "string" }} title="Name" dataIndex="name" />
+        <Table.Column title="Name" dataIndex="name" />
         <Table.Column sorter title="Start" dataIndex="start" />
         <Table.Column sorter defaultSortOrder="descend" title="End" dataIndex="end" />
         <Table.Column title="State" dataIndex="state" />

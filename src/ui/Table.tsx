@@ -1,5 +1,6 @@
 import { ColumnProps, TablePaginationConfig } from "antd/lib/table";
 import {
+  ColumnsType,
   FilterValue,
   SorterResult,
   TableCurrentDataSource,
@@ -16,6 +17,7 @@ import { useEffect, useImperativeHandle, useMemo, useState } from "react";
 import React from "react";
 import { TableContainer } from "../styles/TableStyles";
 import TableFilterModal from "./TableFilterModal";
+import { filterDropdownFactoryBool, filterDropdownFactoryCheckbox, filterDropdownFactoryDateRange, filterDropdownFactoryRadio, filterDropdownFactoryStr } from "./TableFIlters";
 
 interface paginationPropsFunctionI {
   (currentPage: number, totalItems: number): PaginationProps;
@@ -110,7 +112,7 @@ const Column = <RecordType extends unknown>({
 }: CustomColumnProps<RecordType>) => <AntTable.Column {...props} />;
 
 //React.ForwardRefExoticComponent<CustomProps & React.RefAttributes<any>>
-type ForwardTableProps = Omit<TableProps<any>, "pagination"> & CustomTableProps;
+type ForwardTableProps = Omit<TableProps<any>, "pagination" | "columns"> & CustomTableProps;
 export type ForwardTableRef = {
   getPagination: TablePaginationConfig;
   setPagination: React.Dispatch<React.SetStateAction<TablePaginationConfig>>;
@@ -131,7 +133,6 @@ const Table: TableType = Object.assign(
         paginationTotalItems,
         hidePagination,
         onChange: onTableChange,
-        columns: columnsProp,
         ...props
       },
       ref
@@ -194,40 +195,87 @@ const Table: TableType = Object.assign(
       };
 
       useEffect(() => {
-        const columns: any[] = [];
+        const columns: any = [];
         React.Children.forEach(props.children, (child) => {
           if (typeof child === "object") {
             if ((child as any)?.type?.name === "Column") {
-              columns.push((child as any).props);
+              columns.push({...(child as any).props});
             }
           }
           console.log((child as any)?.type, (child as any)?.type?.name);
         });
-        setColumns(columns)
-      }, [props.children]);
-
-      useEffect(() => {
-        const filters: TableFiltersType = {}
-        if (!columns.length) return
-        console.log(columns)
-        columns.forEach((c) => {
-          if (c.filter) {
-            switch (c.filter.type) {
-              case "string":
+        const filters: TableFiltersType = {...tableFilters}
+        let filterChange = false
+        for (let i = 0; i < columns.length; i++) {
+          if (columns[i].filter) {
+            switch (columns[i].filter.type) {
               case "radio":
-                filters[c.dataIndex || c.title] = c.filter.initialValue ? [c.filter.initialValue] : []
+                if (!filters[columns[i].dataIndex || columns[i].title]) {
+                  filters[columns[i].dataIndex || columns[i].title] = columns[i].filter.initialValue ? [columns[i].filter.initialValue] : []
+                  filterChange = true
+                  columns[i].filterDropdown = filterDropdownFactoryRadio({ options: columns[i].filter.options })
+                  columns[i].defaultFilteredValue = columns[i].filter.initialValue ? filters[columns[i].dataIndex || columns[i].title] : undefined
+                }
                 break
               case "boolean":
-                filters[c.dataIndex || c.title] = c.filter.initialValue === true ? ["true"] : c.filter.initialValue === false ? ["false"] : []
+                if (!filters[columns[i].dataIndex || columns[i].title]) {
+                  filters[columns[i].dataIndex || columns[i].title] = columns[i].filter.initialValue === true ? ["true"] : columns[i].filter.initialValue === false ? ["false"] : []
+                  filterChange = true
+                  columns[i].filterDropdown = filterDropdownFactoryBool()
+                  columns[i].defaultFilteredValue = columns[i].filter.initialValue ? filters[columns[i].dataIndex || columns[i].title] : undefined
+                }
                 break
-              default:
-                filters[c.dataIndex || c.title] = c.filter.initialValue
+              case "checkbox":
+                if (!filters[columns[i].dataIndex || columns[i].title]) {
+                  filters[columns[i].dataIndex || columns[i].title] = columns[i].filter.initialValue
+                  filterChange = true
+                  columns[i].filterDropdown = filterDropdownFactoryCheckbox({ options: columns[i].filter.options })
+                  columns[i].defaultFilteredValue = filters[columns[i].dataIndex || columns[i].title]
+                }
+                break
+              case "dateRange":
+                if (!filters[columns[i].dataIndex || columns[i].title]) {
+                  filters[columns[i].dataIndex || columns[i].title] = columns[i].filter.initialValue
+                  filterChange = true
+                  columns[i].filterDropdown = filterDropdownFactoryDateRange({
+                    allowEmptyEnd: columns[i].filter.allowEmptyEnd,
+                    allowEmptyStart: columns[i].filter.allowEmptyStart,
+                    dropdownAlignTop: columns[i].filter.dropdownAlignTop,
+                    showTime: columns[i].filter.showTime,
+                  })
+                  columns[i].defaultFilteredValue = filters[columns[i].dataIndex || columns[i].title]
+                }
+                break
+              default: //string
+                if (!filters[columns[i].dataIndex || columns[i].title]) {
+                  filters[columns[i].dataIndex || columns[i].title] = columns[i].filter.initialValue
+                  filterChange = true
+                  columns[i].filterDropdown = filterDropdownFactoryStr()
+                  columns[i].defaultFilteredValue = columns[i].filter.initialValue ? filters[columns[i].dataIndex || columns[i].title] : undefined
+                }
                 break
             }
           }
-        })
-        setTableFilters(filters)
-      }, [columns])
+        }
+        if (filterChange) {
+          setTableFilters(filters)
+        }
+        setColumns(columns)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [props.children]);
+
+      useEffect(() => {
+        if (isDesktop && columns) {
+          console.log('is desktop')
+          const newColumns: ColumnsType<any> = [...columns]
+          Object.entries(tableFilters).forEach(([key, value]) => {
+            const index = newColumns.findIndex((c: any) => (c.dataIndex || c.title) === key)
+            newColumns[index].defaultFilteredValue = value
+          })
+          setColumns(newColumns)
+        }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [isDesktop])
 
       console.log(columns)
 
@@ -272,7 +320,7 @@ const Table: TableType = Object.assign(
                       : row.key
                   }
                 >
-                  {columns.map((column) => (
+                  {columns?.map((column: any) => (
                     <MobileTableCell key={column.dataIndex || column.title}>
                       <div className="label">{column.title}</div>
                       <div className="value">{row[column.dataIndex]}</div>

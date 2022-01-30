@@ -97,8 +97,9 @@ export const data: Array<GameI> = [
   {
     name: "Slime-san",
     start: "2022-01-02",
-    hours: 2,
-    achievements: [8, 85],
+    end: "2022-01-29",
+    hours: 2.4,
+    achievements: [10, 85],
     state: GameState.Playing,
     tags: [GameTag.Precision, GameTag.Platformer],
   },
@@ -123,6 +124,7 @@ export const data: Array<GameI> = [
   {
     name: "The great ace attorney chronicles",
     start: "2022-01-01",
+    end: "2022-01-05",
     hours: 0.5,
     achievements: [0, 30],
     state: GameState.Playing,
@@ -388,6 +390,7 @@ export const data: Array<GameI> = [
   {
     name: "It takes two",
     start: "2021-12-04",
+    end: "2022-01-08",
     hours: 4.5,
     achievements: [3, 20],
     state: GameState.Playing,
@@ -758,7 +761,9 @@ export const data: Array<GameI> = [
   {
     name: "A hat in a time",
     start: "2021-07-03",
-    achievements: [3, 46],
+    end: "2022-01-27",
+    hours: 10,
+    achievements: [8, 46],
     state: GameState.Playing,
     tags: [GameTag.Platformer, GameTag.Collectathon],
   },

@@ -19,25 +19,21 @@ const dropDownAlignTopStyle = {
   },
 }
 
-interface FilterDropdownFactoryProps {
-  loading?: boolean
-}
-
-interface FilterDropdownFactoryOptionsProps extends FilterDropdownFactoryProps {
+interface FilterDropdownFactoryOptionsProps {
   options: Array<{
     label: React.Key
     value: React.Key
   }>
 }
 
-interface FilterDropdownFactoryDateRangeProps extends FilterDropdownFactoryProps {
+interface FilterDropdownFactoryDateRangeProps {
   allowEmptyEnd?: boolean
   allowEmptyStart?: boolean
   dropdownAlignTop?: boolean
   showTime?: boolean
 }
 
-export const filterDropdownFactoryStr = (extraProps?: FilterDropdownFactoryProps) => {
+export const filterDropdownFactoryStr = () => {
   return (props: FilterDropdownProps) => {
     const inputRef = useRef<AntInput>(null)
     useLayoutEffect(() => {
@@ -55,17 +51,16 @@ export const filterDropdownFactoryStr = (extraProps?: FilterDropdownFactoryProps
     return (
       <FilterContainer>
         <Input
-          disabled={extraProps?.loading}
           ref={inputRef}
           value={props.selectedKeys[0]}
           onChange={(e) => props.setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => props.confirm()}
         />
         <FlexSection gutter={8} className="mt-8">
-          <Button size="small" disabled={extraProps?.loading} onClick={() => props.confirm()} type="primary">
+          <Button size="small" onClick={() => props.confirm()} type="primary">
             Filter
           </Button>
-          <Button size="small" disabled={extraProps?.loading} onClick={props.clearFilters}>
+          <Button size="small" onClick={props.clearFilters}>
             Clear
           </Button>
         </FlexSection>
@@ -74,11 +69,10 @@ export const filterDropdownFactoryStr = (extraProps?: FilterDropdownFactoryProps
   }
 }
 
-export const filterDropdownFactoryBool = (extraProps?: FilterDropdownFactoryProps) => {
+export const filterDropdownFactoryBool = () => {
   return (props: FilterDropdownProps) => (
     <FilterContainer>
       <Checkbox
-        disabled={extraProps?.loading}
         value={props.selectedKeys[0] === 'true'}
         checked={props.selectedKeys[0] === 'true'}
         indeterminate={props.selectedKeys[0] === undefined}
@@ -91,7 +85,7 @@ export const filterDropdownFactoryBool = (extraProps?: FilterDropdownFactoryProp
         Yes
       </Checkbox>
       <div className="mt-8">
-        <Button size="small" disabled={extraProps?.loading} onClick={() => props.confirm()} type="primary">
+        <Button size="small" onClick={() => props.confirm()} type="primary">
           Filter
         </Button>
       </div>
@@ -115,10 +109,10 @@ export const filterDropdownFactoryRadio = (extraProps: FilterDropdownFactoryOpti
           ))}
         </Radio.Group>
         <FlexSection gutter={8} className="mt-16">
-          <Button size="small" disabled={extraProps.loading} onClick={() => props.confirm()} type="primary">
+          <Button size="small" onClick={() => props.confirm()} type="primary">
             Filter
           </Button>
-          <Button size="small" disabled={extraProps.loading} onClick={props.clearFilters}>
+          <Button size="small" onClick={props.clearFilters}>
             Clear
           </Button>
         </FlexSection>
@@ -143,10 +137,10 @@ export const filterDropdownFactoryCheckbox = (extraProps: FilterDropdownFactoryO
           ))}
         </CheckboxGroup>
         <FlexSection gutter={8} className="mt-8">
-          <Button size="small" disabled={extraProps.loading} onClick={() => props.confirm()} type="primary">
+          <Button size="small" onClick={() => props.confirm()} type="primary">
             Filter
           </Button>
-          <Button size="small" disabled={extraProps.loading} onClick={props.clearFilters}>
+          <Button size="small" onClick={props.clearFilters}>
             Clear
           </Button>
         </FlexSection>
@@ -174,10 +168,10 @@ export const filterDropdownFactoryDateRange = (extraProps: FilterDropdownFactory
           }
         />
         <FlexSection gutter={8} className="mt-8">
-          <Button size="small" disabled={extraProps.loading} onClick={() => props.confirm()} type="primary">
+          <Button size="small" onClick={() => props.confirm()} type="primary">
             Filter
           </Button>
-          <Button size="small" disabled={extraProps.loading} onClick={props.clearFilters}>
+          <Button size="small" onClick={props.clearFilters}>
             Clear
           </Button>
         </FlexSection>
