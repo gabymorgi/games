@@ -53,6 +53,23 @@ export interface GameI {
 
 export const data: Array<GameI> = [
   {
+    name: "The binding of Isaac: Repentance",
+    start: "2012-02-02",
+    end: "2012-02-08",
+    hours: 30.5,
+    achievements: [90, 637],
+    state: GameState.Playing,
+    tags: [GameTag.Roguelike],
+  },
+  {
+    name: "Phantom Jump",
+    start: "2022-01-31",
+    hours: 0.5,
+    achievements: [1, 37],
+    state: GameState.Banned,
+    tags: [GameTag.Precision],
+  },
+  {
     name: "Environmental station alpha",
     start: "2022-01-09",
     end: "2022-01-15",
@@ -391,8 +408,8 @@ export const data: Array<GameI> = [
     name: "It takes two",
     start: "2021-12-04",
     end: "2022-01-08",
-    hours: 4.5,
-    achievements: [3, 20],
+    hours: 11.2,
+    achievements: [6, 20],
     state: GameState.Playing,
     tags: [GameTag.Platformer, GameTag.Cooperative, GameTag.Puzzles],
   },
@@ -761,11 +778,19 @@ export const data: Array<GameI> = [
   {
     name: "A hat in a time",
     start: "2021-07-03",
-    end: "2022-01-27",
-    hours: 10,
-    achievements: [8, 46],
-    state: GameState.Playing,
+    end: "2022-01-31",
+    hours: 15.8,
+    achievements: [16, 46],
+    state: GameState.Completed,
     tags: [GameTag.Platformer, GameTag.Collectathon],
+    score: {
+      content: 7,
+      lore: 3,
+      mechanics: 6,
+      controls: 6,
+      graphics: 9,
+      bosses: 6,
+    },
   },
   {
     name: "Bug fables",
@@ -880,7 +905,7 @@ export const data: Array<GameI> = [
   {
     name: "Super meat boy forever",
     start: "2020-12-25",
-    end: "2022-01-20",
+    end: "2022-01-27",
     hours: 107 + 19,
     achievements: [31, 36],
     state: GameState.Completed,
