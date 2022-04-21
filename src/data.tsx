@@ -53,11 +53,20 @@ export interface GameI {
 
 export const data: Array<GameI> = [
   {
+    name: "Unravel",
+    start: "2022-04-14",
+    end: "2022-04-14",
+    hours: 1,
+    achievements: [2, 26],
+    state: GameState.Playing,
+    tags: [GameTag.Platformer, GameTag.Puzzles],
+  },
+  {
     name: "The binding of Isaac: Repentance",
     start: "2022-02-02",
-    end: "2022-03-13",
-    hours: 100.3,
-    achievements: [214, 637],
+    end: "2022-04-21",
+    hours: 225,
+    achievements: [388, 637],
     state: GameState.Playing,
     tags: [GameTag.Roguelike],
   },
