@@ -5,7 +5,8 @@ export const FilterContainer = styled.div`
 `
 
 export const TableContainer = styled.div`
-&& {
+  //display: grid;
+  //grid-template-columns: repeat(8, 1fr);
     border-radius: 8px;
     td.ant-table-column-sort {
       background-color: inherit;
@@ -22,6 +23,9 @@ export const TableContainer = styled.div`
       border: none;
       font-size: 14px;
       font-weight: 600;
+      position: sticky;
+      top: 0;
+      z-index: 10;
       &:before {
         content: unset !important; //idk how to be more specific so ant don't override this
       }
@@ -183,5 +187,4 @@ export const TableContainer = styled.div`
         }
       }
     }
-  }
 `

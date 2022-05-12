@@ -30,7 +30,7 @@ import {
   startOfYear, 
   subYears } from 'date-fns';
 import { stateInfo } from './State';
-import { tagToString } from './Tags';
+import { tagToString, visuallyDistinctColors } from './Tags';
 import Button from '../ui/Button';
 import Switch from '../ui/Switch';
 import * as styles from '../styles/ChartStyles';
@@ -209,12 +209,12 @@ export const ChartComponent: React.FC<ChartProps> = (props) => {
       tagChart: {
         labels: tagsFilteredData.map(([key]) => GameTag[Number(key)]),
         values: tagsFilteredData.map(([_, value]) => value),
-        hue: tagsFilteredData.map(([key]) => tagToString[key as unknown as GameTag].color)
+        color: tagsFilteredData.map(([key]) => tagToString[key as unknown as GameTag].color)
       },
       stateChart: {
         labels: Object.keys(stateData).map((k: string) => GameState[Number(k)]),
         values: Object.values(stateData),
-        hue: Object.keys(stateData).map((k) => stateInfo[k as unknown as GameState].color)
+        color: Object.keys(stateData).map((k) => stateInfo[k as unknown as GameState].color)
       }
     }
   }, [props.data, seeHistory, interval])
@@ -246,8 +246,8 @@ export const ChartComponent: React.FC<ChartProps> = (props) => {
                 datasets: [
                   {
                     data: dataCharts.stateChart.values,
-                    backgroundColor: dataCharts.stateChart.hue.map((h) => `${h}50`),
-                    borderColor: dataCharts.stateChart.hue,
+                    backgroundColor: dataCharts.stateChart.color.map((h) => `${h}50`),
+                    borderColor: dataCharts.stateChart.color,
                     borderWidth: 3,
                   },
                 ],
@@ -264,8 +264,8 @@ export const ChartComponent: React.FC<ChartProps> = (props) => {
                 datasets: [
                   {
                     data: dataCharts.tagChart.values,
-                    backgroundColor: dataCharts.tagChart.hue.map((h) => `hsla(${h}, 100%, 70%, 0.2)`),
-                    borderColor: dataCharts.tagChart.hue.map((h) => `hsla(${h}, 100%, 70%, 1)`),
+                    backgroundColor: dataCharts.tagChart.color.map((c) => `${c}50`),
+                    borderColor: dataCharts.tagChart.color,
                     borderWidth: 3,
                   },
                 ],
