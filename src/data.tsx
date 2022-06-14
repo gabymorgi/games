@@ -1,5 +1,6 @@
 export enum GameTag {
   Action,
+  Adventure,
   Board,
   Collectathon,
   Cooperative,
@@ -53,6 +54,42 @@ export interface GameI {
 
 export const data: Array<GameI> = [
   {
+    name: "Bob Was Hungry",
+    start: "2022-06-08",
+    end: "2022-06-08",
+    hours: 0.5,
+    achievements: [1, 38],
+    state: GameState.Banned,
+    tags: [GameTag.Precision],
+  },
+  {
+    name: "HoPiKo",
+    start: "2022-06-07",
+    end: "2022-06-07",
+    hours: 0.5,
+    achievements: [5, 53],
+    state: GameState.Banned,
+    tags: [GameTag.Precision],
+  },
+  {
+    name: "Shantae: Risky's Revenge",
+    start: "2022-06-06",
+    end: "2022-06-13",
+    hours: 6,
+    achievements: [8, 26],
+    state: GameState.Won,
+    tags: [GameTag.Adventure, GameTag.Platformer],
+    score: {
+      content: 3,
+      lore: 3,
+      mechanics: 3,
+      music: 7,
+      controls: 4,
+      graphics: 5,
+      bosses: 3,
+    },
+  },
+  {
     name: "E.Z",
     start: "2022-05-08",
     end: "2022-05-08",
@@ -73,9 +110,9 @@ export const data: Array<GameI> = [
   {
     name: "The binding of Isaac: Repentance",
     start: "2022-02-02",
-    end: "2022-05-13",
-    hours: 295,
-    achievements: [441, 637],
+    end: "2022-06-07",
+    hours: 383,
+    achievements: [512, 637],
     state: GameState.Playing,
     tags: [GameTag.Roguelike],
   },
@@ -136,7 +173,7 @@ export const data: Array<GameI> = [
     end: "2022-01-29",
     hours: 2.4,
     achievements: [10, 85],
-    state: GameState.Playing,
+    state: GameState.Dropped,
     tags: [GameTag.Precision, GameTag.Platformer],
   },
   {
@@ -163,7 +200,7 @@ export const data: Array<GameI> = [
     end: "2022-01-05",
     hours: 0.5,
     achievements: [0, 30],
-    state: GameState.Playing,
+    state: GameState.Dropped,
     tags: [GameTag.MuchoTexto],
   },
   {
@@ -1705,10 +1742,10 @@ export const data: Array<GameI> = [
   {
     name: "Enter the gungeon",
     start: "2017-12-21",
-    end: "2020-01-18",
+    end: "2022-05-14",
     hours: 84.5,
-    achievements: [18, 54],
-    state: GameState.Dropped,
+    achievements: [19, 54],
+    state: GameState.Playing,
     tags: [GameTag.Roguelike],
   },
   {
