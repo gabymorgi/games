@@ -54,6 +54,39 @@ export interface GameI {
 
 export const data: Array<GameI> = [
   {
+    name: "Shantae: Half-Genie Hero",
+    start: "2022-07-02",
+    end: "2022-07-02",
+    hours: 0,
+    achievements: [0, 39],
+    state: GameState.Playing,
+    tags: [GameTag.Platformer, GameTag.Adventure],
+  },{
+    name: "Shantae and the Pirate's Curse",
+    start: "2022-06-18",
+    end: "2022-07-02",
+    hours: 11.1,
+    achievements: [28, 44],
+    state: GameState.Completed,
+    tags: [GameTag.Platformer, GameTag.Adventure],
+    score: {
+      content: 8,
+      lore: 6,
+      mechanics: 7,
+      music: 8,
+      controls: 8,
+      graphics: 8,
+      bosses: 7,
+    },
+  },{
+    name: "Demon Turf",
+    start: "2022-06-16",
+    end: "2022-06-17",
+    hours: 1,
+    achievements: [0, 38],
+    state: GameState.Banned,
+    tags: [GameTag.Platformer],
+  },{
     name: "Bob Was Hungry",
     start: "2022-06-08",
     end: "2022-06-08",
@@ -110,9 +143,9 @@ export const data: Array<GameI> = [
   {
     name: "The binding of Isaac: Repentance",
     start: "2022-02-02",
-    end: "2022-06-07",
-    hours: 383,
-    achievements: [512, 637],
+    end: "2022-07-02",
+    hours: 451,
+    achievements: [558, 637],
     state: GameState.Playing,
     tags: [GameTag.Roguelike],
   },
@@ -1745,7 +1778,7 @@ export const data: Array<GameI> = [
     end: "2022-05-14",
     hours: 84.5,
     achievements: [19, 54],
-    state: GameState.Playing,
+    state: GameState.Dropped,
     tags: [GameTag.Roguelike],
   },
   {
