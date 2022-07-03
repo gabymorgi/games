@@ -2,8 +2,12 @@ import { isBefore, parseISO } from 'date-fns'
 import { useMemo, useState } from 'react'
 import { data as rawData, GameState, GameTag, ScoreI } from '../data'
 
-interface variablesI {
-  tags_in?: Number[]
+export interface FiltersI {
+  name: string
+}
+
+export interface variablesI {
+  filters?: FiltersI
   skip?: number
   first?: number
   orderBy?: string
@@ -40,9 +44,11 @@ export function useQuery(initialVariables?: variablesI) {
   
   const [data, dataLength] = useMemo(() => {
     let filteredData = parsedData
+    /*
     if (variables?.tags_in?.length) {
       filteredData = filteredData.filter((game) => variables.tags_in?.some((tag) => game.tags.includes(tag as GameTag)))
     }
+    */
     if (variables?.orderBy) {
       switch (variables.orderBy) {
         case 'start_asc':

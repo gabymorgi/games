@@ -16,8 +16,9 @@ import Table, {
   TablePaginationType,
   TableSorterType,
 } from "./ui/Table";
-import { useQuery } from "./back/dataQuery";
+import { useQuery, FiltersI } from "./back/dataQuery";
 import React from "react";
+import { Filters } from "./components/Filters";
 
 const gameTags = Object.keys(GameTag)
   .filter((key) => !isNaN(Number(key)))
@@ -52,16 +53,14 @@ function App() {
     });
   }, [data]);
 
-  const handleTableChange = (
-    pagination: TablePaginationType,
-    filters: TableFiltersType,
-    sorter: TableSorterType
+  const handleFiltersChange = (
+    filters?: FiltersI,
+    sorter?: string,
   ) => {
-    console.log(pagination, filters, sorter);
+    console.log(filters, sorter);
     refetch({
-      tags_in: filters.tags?.map((tag) => Number(tag)),
-      ...paginationToQuery(pagination),
-      orderBy: sorterToQuery(sorter),
+      filters: filters,
+      orderBy: sorter,
     });
   };
 
@@ -69,7 +68,8 @@ function App() {
     <>
       <GlobalStyles />
       <ChartComponent data={rawData} />
-      <Divider />
+      <Divider style={{ borderColor: 'white' }} />
+      <Filters onFiltersChance={handleFiltersChange} style={{ marginBottom: '24px' }} />
       <Table
         dataSource={dataSource}
         rowKey="name"

@@ -5,6 +5,8 @@
   "homepage": "https://gabymorgi.github.io/games",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@mdi/js": "^6.7.96",
+    "@mdi/react": "^1.6.0",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",

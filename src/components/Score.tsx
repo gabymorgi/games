@@ -1,8 +1,10 @@
 import { Tooltip } from "antd";
 import styled from "styled-components";
 import { ScoreI } from "../data";
+import Icon from '@mdi/react'
 import { DislikeFilled, LikeFilled } from "@ant-design/icons";
 import { isDesktop, isMobile } from "../styles/Resolutions";
+import { mdiCup, mdiBookOpenPageVariant, mdiChemicalWeapon, mdiRobotAngry, mdiGoogleController, mdiInstagram, mdiMusicClefTreble, mdiOneUp, mdiSchool } from '@mdi/js';
 
 const StyledScoreHeader = styled.div`
   .title {
@@ -29,32 +31,80 @@ const StyledScoreHeader = styled.div`
       > * {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: center;
         border-left: 1px solid black;
         border-right: 1px solid black;
-        text-orientation: upright;
         width: 25px;
-        writing-mode: tb-rl;
-        letter-spacing: -5px;
+        svg {
+          width: 21px !important;
+          height: unset !important;
+        }
       }
     }
   }
 `;
 
 export const ScoreHeader = () => {
+  /**
+   * content -> mdiCup 
+   * lore -> book open page variant
+   * mechanics -> mdiChemicalWeapon  - mdiCubeUnfolded 
+   * bosses -> skull-scan - mdiRobotAngry 
+   * controls -> mdiGoogleController 
+   * music -> mdiMusicClefTreble 
+   * graphics -> mdiInstagram 
+   * extra -> mdiOneUp 
+   * total -> mdiSchool 
+   */
   return (
     <StyledScoreHeader>
       <div className="title">Score</div>
       <div className="group">
-        <div>content</div>
-        <div>lore</div>
-        <div>mechanics</div>
-        <div>bosses</div>
-        <div>controls</div>
-        <div>music</div>
-        <div>graphics</div>
-        <div>extra</div>
-        <div>total</div>
+        <div><Icon path={mdiCup}
+          title="content"
+          size={1}
+          color="white"
+        /></div>
+        <div><Icon path={mdiBookOpenPageVariant}
+          title="Lore"
+          size={1}
+          color="white"
+        /></div>
+        <div><Icon path={mdiChemicalWeapon}
+          title="mechanics"
+          size={1}
+          color="white"
+        /></div>
+        <div><Icon path={mdiRobotAngry}
+          title="bosses"
+          size={1}
+          color="white"
+        /></div>
+        <div><Icon path={mdiGoogleController}
+          title="controls"
+          size={1}
+          color="white"
+        /></div>
+        <div><Icon path={mdiMusicClefTreble}
+          title="music"
+          size={1}
+          color="white"
+        /></div>
+        <div><Icon path={mdiInstagram}
+          title="graphics"
+          size={1}
+          color="white"
+        /></div>
+        <div><Icon path={mdiOneUp}
+          title="extra"
+          size={1}
+          color="white"
+        /></div>
+        <div><Icon path={mdiSchool}
+          title="total"
+          size={1}
+          color="white"
+        /></div>
       </div>
     </StyledScoreHeader>
   );

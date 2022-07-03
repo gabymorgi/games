@@ -7,7 +7,7 @@ export const MobileTable = styled.div`
   color: #eee;
   background-color: black;
   @media (max-width: ${MAX_MD_SIZE}px) {
-    grid-template-columns: repeat(2, 50%);
+    grid-template-columns: repeat(2, calc(50% - 10px));
   }
   @media (max-width: ${MAX_SM_SIZE}px) {
     grid-template-columns: 100%;
