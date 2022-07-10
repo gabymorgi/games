@@ -4,6 +4,7 @@ import { isMobile } from "./Resolutions";
 export const Filters = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
   font-size: 20px;
   > * {
@@ -49,7 +50,9 @@ export const PieCharts = styled.div`
     width: 50%;
     min-height: 100px;
     height: 50vh;
-    background-color: #111;
+    .ant-card-body, .ant-card-body > * {
+      height: 100%;
+    }
   }
 
   @media(${isMobile}) {
@@ -65,5 +68,7 @@ export const LineChart = styled.div`
   width: 100%;
   min-height: 100px;
   height: 25vh;
-  background-color: #111;
+  .ant-card-body, .ant-card-body > * {
+    height: 100%;
+  }
 `

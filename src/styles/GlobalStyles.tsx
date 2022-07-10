@@ -7,4 +7,8 @@ export default createGlobalStyle`
     padding: 20px;
     height: unset;
   }
+
+  .ant-select-dropdown {
+    padding: 0px !important;
+  }
 `

@@ -1,6 +1,5 @@
 export enum GameTag {
   Action,
-  Adventure,
   Board,
   Collectathon,
   Cooperative,
@@ -38,6 +37,7 @@ export interface ScoreI {
   music?: number;
   graphics?: number;
   extra?: Array<{ bias: number; info: string }>;
+  finalMark: number;
 }
 
 export interface GameI {
@@ -48,19 +48,36 @@ export interface GameI {
   end?: string;
   hours?: number;
   achievements?: [number, number];
-  recomended?: "positive" | "negative" | "neutral";
   score?: ScoreI;
 }
 
 export const data: Array<GameI> = [
   {
+    name: "Shantae and the Seven Sirens",
+    start: "2022-07-03",
+    end: "2022-07-10",
+    hours: 4.7,
+    achievements: [11, 40],
+    state: GameState.Playing,
+    tags: [GameTag.Platformer, GameTag.Metroidvania],
+  },{
     name: "Shantae: Half-Genie Hero",
     start: "2022-07-02",
-    end: "2022-07-02",
-    hours: 0,
-    achievements: [0, 39],
-    state: GameState.Playing,
-    tags: [GameTag.Platformer, GameTag.Adventure],
+    end: "2022-07-03",
+    hours: 7.9,
+    achievements: [8, 46],
+    state: GameState.Won,
+    tags: [GameTag.Platformer, GameTag.Metroidvania],
+    score: {
+      content: 6,
+      lore: 3,
+      mechanics: 5,
+      music: 4,
+      controls: 6,
+      graphics: 8,
+      bosses: 3,
+      finalMark: 5,
+    },
   },{
     name: "Shantae and the Pirate's Curse",
     start: "2022-06-18",
@@ -68,7 +85,7 @@ export const data: Array<GameI> = [
     hours: 11.1,
     achievements: [28, 44],
     state: GameState.Completed,
-    tags: [GameTag.Platformer, GameTag.Adventure],
+    tags: [GameTag.Platformer, GameTag.Metroidvania],
     score: {
       content: 8,
       lore: 6,
@@ -77,6 +94,7 @@ export const data: Array<GameI> = [
       controls: 8,
       graphics: 8,
       bosses: 7,
+      finalMark: 8,
     },
   },{
     name: "Demon Turf",
@@ -111,7 +129,7 @@ export const data: Array<GameI> = [
     hours: 6,
     achievements: [8, 26],
     state: GameState.Won,
-    tags: [GameTag.Adventure, GameTag.Platformer],
+    tags: [GameTag.Metroidvania, GameTag.Platformer],
     score: {
       content: 3,
       lore: 3,
@@ -120,6 +138,7 @@ export const data: Array<GameI> = [
       controls: 4,
       graphics: 5,
       bosses: 3,
+      finalMark: 4,
     },
   },
   {
@@ -144,8 +163,8 @@ export const data: Array<GameI> = [
     name: "The binding of Isaac: Repentance",
     start: "2022-02-02",
     end: "2022-07-02",
-    hours: 451,
-    achievements: [558, 637],
+    hours: 462,
+    achievements: [565, 637],
     state: GameState.Playing,
     tags: [GameTag.Roguelike],
   },
@@ -181,6 +200,7 @@ export const data: Array<GameI> = [
       controls: 5,
       graphics: 1,
       bosses: 2,
+      finalMark: 3,
     },
   },
   {
@@ -198,6 +218,7 @@ export const data: Array<GameI> = [
       controls: 6,
       graphics: 7,
       bosses: 4,
+      finalMark: 6,
     },
   },
   {
@@ -225,6 +246,7 @@ export const data: Array<GameI> = [
       music: 2,
       graphics: 2,
       bosses: 4,
+      finalMark: 2,
     },
   },
   {
@@ -241,7 +263,6 @@ export const data: Array<GameI> = [
     start: "2021-12-31",
     end: "2022-01-01",
     hours: 2.3,
-    recomended: "negative",
     achievements: [11, 17],
     state: GameState.Won,
     tags: [GameTag.Metroidvania],
@@ -253,6 +274,7 @@ export const data: Array<GameI> = [
       music: 4,
       graphics: 4,
       bosses: 4,
+      finalMark: 4,
     },
   },
   {
@@ -269,6 +291,7 @@ export const data: Array<GameI> = [
       controls: 3,
       music: 2,
       graphics: 1,
+      finalMark: 2,
     },
   },
   {
@@ -287,6 +310,7 @@ export const data: Array<GameI> = [
       music: 8,
       graphics: 4,
       bosses: 4,
+      finalMark: 3,
     },
   },
   {
@@ -305,6 +329,7 @@ export const data: Array<GameI> = [
       music: 3,
       graphics: 1,
       bosses: 2,
+      finalMark: 3,
     },
   },
   {
@@ -331,6 +356,11 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 6,
       graphics: 7,
+      extra: [{
+        bias: -1,
+        info: "No quick save system",
+      }],
+      finalMark: 9,
     },
   },
   {
@@ -343,6 +373,7 @@ export const data: Array<GameI> = [
       controls: 2,
       music: 1,
       graphics: 2,
+      finalMark: 1,
     },
   },
   {
@@ -353,7 +384,6 @@ export const data: Array<GameI> = [
     hours: 6.2,
     achievements: [8, 13],
     tags: [GameTag.Precision],
-    recomended: "positive",
     score: {
       content: 6,
       lore: 2,
@@ -362,6 +392,7 @@ export const data: Array<GameI> = [
       controls: 8,
       music: 5,
       graphics: 4,
+      finalMark: 7,
     },
   },
   {
@@ -379,6 +410,7 @@ export const data: Array<GameI> = [
       controls: 8,
       music: 4,
       graphics: 3,
+      finalMark: 6,
     },
   },
   {
@@ -405,6 +437,7 @@ export const data: Array<GameI> = [
       controls: 9,
       music: 7,
       graphics: 5,
+      finalMark: 8,
     },
   },
   {
@@ -439,6 +472,8 @@ export const data: Array<GameI> = [
       controls: 4,
       music: 5,
       graphics: 4,
+      extra: [{ bias: -1, info: "Have to dye on purpose to get achievements" }],
+      finalMark: 2,
     },
   },
   {
@@ -465,6 +500,7 @@ export const data: Array<GameI> = [
       controls: 8,
       music: 6,
       graphics: 8,
+      finalMark: 7,
     },
   },
   {
@@ -491,6 +527,7 @@ export const data: Array<GameI> = [
       controls: 7,
       music: 5,
       graphics: 5,
+      finalMark: 7,
     },
   },
   {
@@ -509,6 +546,7 @@ export const data: Array<GameI> = [
       controls: 9,
       music: 7,
       graphics: 9,
+      finalMark: 8,
     },
   },
   {
@@ -519,12 +557,13 @@ export const data: Array<GameI> = [
     state: GameState.Won,
     tags: [GameTag.Platformer, GameTag.Precision],
     score: {
-      content: 4,
-      lore: 4,
-      mechanics: 4,
-      controls: 6,
-      music: 4,
-      graphics: 4,
+      content: 2,
+      lore: 2,
+      mechanics: 2,
+      controls: 5,
+      music: 3,
+      graphics: 2,
+      finalMark: 2,
     },
   },
   {
@@ -543,6 +582,7 @@ export const data: Array<GameI> = [
       controls: 8,
       music: 6,
       graphics: 10,
+      finalMark: 8,
     },
   },
   {
@@ -573,6 +613,7 @@ export const data: Array<GameI> = [
         { bias: -0.5, info: "broken abilities, or useless" },
         { bias: -0.5, info: "boring characters" },
       ],
+      finalMark: 9,
     },
   },
   {
@@ -616,6 +657,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 8,
       graphics: 10,
+      finalMark: 10,
     },
   },
   {
@@ -669,6 +711,7 @@ export const data: Array<GameI> = [
         },
         { bias: -1, info: "Abilities break mechanics, or have ocassional use" },
       ],
+      finalMark: 2,
     },
   },
   {
@@ -687,6 +730,7 @@ export const data: Array<GameI> = [
       controls: 8,
       music: 6,
       graphics: 6,
+      finalMark: 10,
     },
   },
   {
@@ -704,6 +748,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 6,
       graphics: 6,
+      finalMark: 10,
     },
   },
   {
@@ -722,6 +767,7 @@ export const data: Array<GameI> = [
       controls: 8,
       music: 4,
       graphics: 6,
+      finalMark: 5,
     },
   },
   {
@@ -760,6 +806,7 @@ export const data: Array<GameI> = [
           info: "Power-ups breaks completely the game, Even the ones that you get at the very beginning",
         },
       ],
+      finalMark: 6,
     },
   },
   {
@@ -821,6 +868,7 @@ export const data: Array<GameI> = [
       music: 6,
       graphics: 6,
       extra: [{ bias: -1, info: "Colliders" }],
+      finalMark: 5,
     },
   },
   {
@@ -855,6 +903,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 6,
       graphics: 10,
+      finalMark: 5,
     },
   },
   {
@@ -888,6 +937,7 @@ export const data: Array<GameI> = [
       controls: 6,
       graphics: 9,
       bosses: 6,
+      finalMark: 7,
     },
   },
   {
@@ -898,6 +948,15 @@ export const data: Array<GameI> = [
     achievements: [24, 30],
     state: GameState.Completed,
     tags: [GameTag.RPG, GameTag.TurnBased],
+    score: {
+      content: 10,
+      lore: 10,
+      mechanics: 10,
+      controls: 10,
+      graphics: 10,
+      bosses: 10,
+      finalMark: 10,
+    },
   },
   {
     name: "Superliminal",
@@ -931,6 +990,7 @@ export const data: Array<GameI> = [
       controls: 8,
       music: 8,
       graphics: 6,
+      finalMark: 9,
     },
   },
   {
@@ -948,6 +1008,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 6,
       graphics: 8,
+      finalMark: 8,
     },
   },
   {
@@ -963,6 +1024,7 @@ export const data: Array<GameI> = [
       bosses: 8,
       controls: 8,
       graphics: 10,
+      finalMark: 6,
     },
   },
   {
@@ -981,6 +1043,7 @@ export const data: Array<GameI> = [
       controls: 10,
       graphics: 6,
       extra: [{ bias: -1, info: "It's the same than the first one" }],
+      finalMark: 6,
     },
   },
   {
@@ -998,6 +1061,7 @@ export const data: Array<GameI> = [
       bosses: 6,
       controls: 10,
       graphics: 6,
+      finalMark: 7,
     },
   },
   {
@@ -1022,6 +1086,7 @@ export const data: Array<GameI> = [
           info: "Autorun makes hard to understand and solve some levels",
         },
       ],
+      finalMark: 10,
     },
   },
   {
@@ -1039,6 +1104,7 @@ export const data: Array<GameI> = [
       bosses: 6,
       controls: 10,
       graphics: 6,
+      finalMark: 4,
     },
   },
   {
@@ -1057,6 +1123,7 @@ export const data: Array<GameI> = [
       controls: 8,
       music: 6,
       graphics: 10,
+      finalMark: 9,
     },
   },
   {
@@ -1073,6 +1140,7 @@ export const data: Array<GameI> = [
       controls: 5,
       music: 1,
       graphics: 1,
+      finalMark: 2,
     },
   },
   {
@@ -1106,6 +1174,7 @@ export const data: Array<GameI> = [
       mechanics: 4,
       controls: 8,
       graphics: 5,
+      finalMark: 3,
     },
   },
   {
@@ -1132,6 +1201,7 @@ export const data: Array<GameI> = [
       bosses: 8,
       controls: 8,
       graphics: 8,
+      finalMark: 7,
     },
   },
   {
@@ -1155,6 +1225,7 @@ export const data: Array<GameI> = [
         { bias: -0.5, info: "Bosses have checkpoint" },
         { bias: -0.5, info: "You can change equipment during bosses" },
       ],
+      finalMark: 5,
     },
   },
   {
@@ -1180,6 +1251,7 @@ export const data: Array<GameI> = [
       bosses: 6,
       controls: 8,
       graphics: 6,
+      finalMark: 6,
     },
   },
   {
@@ -1196,6 +1268,7 @@ export const data: Array<GameI> = [
       bosses: 1,
       controls: 10,
       graphics: 10,
+      finalMark: 8,
     },
   },
   {
@@ -1212,6 +1285,7 @@ export const data: Array<GameI> = [
       bosses: 1,
       controls: 10,
       graphics: 10,
+      finalMark: 10,
     },
   },
   {
@@ -1227,6 +1301,7 @@ export const data: Array<GameI> = [
       bosses: 4,
       controls: 5,
       graphics: 6,
+      finalMark: 5,
     },
   },
   {
@@ -1243,6 +1318,7 @@ export const data: Array<GameI> = [
       controls: 8,
       music: 6,
       graphics: 8,
+      finalMark: 8,
     },
   },
   {
@@ -1258,6 +1334,8 @@ export const data: Array<GameI> = [
       bosses: 8,
       controls: 4,
       graphics: 5,
+      extra: [{ bias: 0, info: "It's an old game" } ],
+      finalMark: 5,
     },
   },
   {
@@ -1302,6 +1380,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 8,
       graphics: 8,
+      finalMark: 10,
     },
   },
   {
@@ -1371,6 +1450,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 8,
       graphics: 10,
+      finalMark: 10,
     },
   },
   {
@@ -1389,6 +1469,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 8,
       graphics: 10,
+      finalMark: 10,
     },
   },
   {
@@ -1399,6 +1480,16 @@ export const data: Array<GameI> = [
     achievements: [619, 636],
     state: GameState.Won,
     tags: [GameTag.TowerDefense],
+    score: {
+      content: 8,
+      lore: 5,
+      mechanics: 8,
+      bosses: 3,
+      controls: 10,
+      music: 1,
+      graphics: 3,
+      finalMark: 10,
+    },
   },
   {
     name: "Oneshot",
@@ -1408,6 +1499,14 @@ export const data: Array<GameI> = [
     achievements: [9, 11],
     state: GameState.Won,
     tags: [GameTag.Puzzles, GameTag.MuchoTexto],
+    score: {
+      content: 5,
+      lore: 10,
+      mechanics: 7,
+      graphics: 6,
+      extra: [{ bias: 1, info: "Creative puzzles" } ],
+      finalMark: 9,
+    },
   },
   {
     name: "Baba is you",
@@ -1444,6 +1543,7 @@ export const data: Array<GameI> = [
       music: 10,
       graphics: 10,
       extra: [{ bias: 1, info: "Humor" }],
+      finalMark: 10,
     },
   },
   {
@@ -1462,6 +1562,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 6,
       graphics: 10,
+      finalMark: 10,
     },
   },
   {
@@ -1524,6 +1625,7 @@ export const data: Array<GameI> = [
       controls: 7,
       music: 5,
       graphics: 5,
+      finalMark: 6,
     },
   },
   {
@@ -1590,6 +1692,7 @@ export const data: Array<GameI> = [
       bosses: 8,
       controls: 7,
       graphics: 5,
+      finalMark: 6,
     },
   },
   {
@@ -1656,6 +1759,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 8,
       graphics: 10,
+      finalMark: 10,
     },
   },
   {
@@ -1682,6 +1786,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 7,
       graphics: 10,
+      finalMark: 10,
     },
   },
   {
@@ -1734,6 +1839,7 @@ export const data: Array<GameI> = [
       controls: 8,
       graphics: 8,
       extra: [{ bias: 1, info: "Unique hidden rooms on each save file" }],
+      finalMark: 8,
     },
   },
   {
@@ -1752,6 +1858,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 7,
       graphics: 10,
+      finalMark: 8,
     },
   },
   {
@@ -1770,6 +1877,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 5,
       graphics: 5,
+      finalMark: 7,
     },
   },
   {
@@ -1789,13 +1897,14 @@ export const data: Array<GameI> = [
     state: GameState.Won,
     tags: [GameTag.Platformer],
     score: {
-      content: 4,
-      lore: 5,
-      mechanics: 5,
-      bosses: 5,
-      controls: 4,
-      music: 4,
+      content: 2,
+      lore: 3,
+      mechanics: 2,
+      bosses: 3,
+      controls: 2,
+      music: 2,
       graphics: 8,
+      finalMark: 2,
     },
   },
   {
@@ -1806,6 +1915,16 @@ export const data: Array<GameI> = [
     achievements: [21, 28],
     state: GameState.Won,
     tags: [GameTag.Precision, GameTag.Action],
+    score: {
+      content: 7,
+      lore: 5,
+      mechanics: 6,
+      bosses: 10,
+      controls: 8,
+      music: 9,
+      graphics: 10,
+      finalMark: 9,
+    },
   },
   {
     name: "Bit trip runner 2",
@@ -1829,6 +1948,7 @@ export const data: Array<GameI> = [
           info: "Beating it on hard doesn't unlock EZ and normal achievements",
         },
       ],
+      finalMark: 7,
     },
   },
   {
@@ -1847,6 +1967,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 10,
       graphics: 10,
+      finalMark: 10,
     },
   },
   {
@@ -1864,6 +1985,7 @@ export const data: Array<GameI> = [
       bosses: 5,
       controls: 8,
       graphics: 5,
+      finalMark: 5,
     },
   },
   {
@@ -1898,6 +2020,7 @@ export const data: Array<GameI> = [
       mechanics: 8,
       controls: 7,
       graphics: 5,
+      finalMark: 7,
     },
   },
   {
@@ -1908,6 +2031,15 @@ export const data: Array<GameI> = [
     achievements: [1, 2],
     state: GameState.Won,
     tags: [GameTag.Puzzles],
+    score: {
+      content: 10,
+      lore: 2,
+      mechanics: 10,
+      controls: 10,
+      graphics: 8,
+      extra: [{ bias: 1, info: "Creative puzzles" }],
+      finalMark: 10,
+    },
   },
   {
     name: "Hacknet",
@@ -1941,6 +2073,7 @@ export const data: Array<GameI> = [
       mechanics: 4,
       controls: 10,
       graphics: 5,
+      finalMark: 7,
     },
   },
   {
@@ -1957,6 +2090,7 @@ export const data: Array<GameI> = [
       mechanics: 5,
       controls: 10,
       graphics: 10,
+      finalMark: 8,
     },
   },
   {
@@ -1973,6 +2107,7 @@ export const data: Array<GameI> = [
       mechanics: 7,
       controls: 10,
       graphics: 7,
+      finalMark: 8,
     },
   },
   {
@@ -2107,6 +2242,7 @@ export const data: Array<GameI> = [
       controls: 8,
       music: 5,
       graphics: 4,
+      finalMark: 8,
     },
   },
   {
@@ -2132,6 +2268,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 10,
       graphics: 10,
+      finalMark: 10,
     },
   },
   {
@@ -2236,6 +2373,7 @@ export const data: Array<GameI> = [
       controls: 10,
       music: 10,
       graphics: 7,
+      finalMark: 10,
     },
   },
   {

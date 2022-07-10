@@ -1,24 +1,27 @@
 import { Button as AntButton } from "antd";
 import styled from "styled-components";
+import colorPalette from "../styles/variables";
 
 export default styled(AntButton)`
-  background-color: #696;
-  border-color: #363;
-  color: #CFC;
+  background-color: ${colorPalette.primaryBG};
+  border-color: ${colorPalette.primaryBorder};
+  color: ${colorPalette.primaryText};
 
-  &:hover {
-    background-color: #9c9;
-    color: #363;
+  &:hover, &:focus {
+    background-color: ${colorPalette.primaryBGHover};
+    color: ${colorPalette.primaryTextHover};
+    border-color: ${colorPalette.primaryBorderActive};
   }
 
   &:active {
-    background-color: #cfc;
-    color: #696;
+    background-color: ${colorPalette.primaryBGActive};
+    color: ${colorPalette.primaryTextActive};
+    border-color: ${colorPalette.primaryBorderActive};
   }
 
   &[disabled], &[disabled]:hover {
-    background-color: #222;
-    color: #666;
-    border-color: #111;
+    background-color: ${colorPalette.primaryBGDisabled};
+    color: ${colorPalette.primaryTextDisabled};
+    border-color: ${colorPalette.primaryBorderDisabled};
   }
 `

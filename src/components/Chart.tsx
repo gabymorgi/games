@@ -30,12 +30,13 @@ import {
   startOfYear, 
   subYears } from 'date-fns';
 import { stateInfo } from './State';
-import { tagToString, visuallyDistinctColors } from './Tags';
+import { tagToString } from './Tags';
 import Button from '../ui/Button';
 import Switch from '../ui/Switch';
 import * as styles from '../styles/ChartStyles';
 import { FlexSection } from '../ui/Layout';
 import { ParsedDataI } from '../back/dataQuery';
+import Card from '../ui/Card';
 
 ChartJS.register(
   CategoryScale,
@@ -238,60 +239,66 @@ export const ChartComponent: React.FC<ChartProps> = (props) => {
         </div>
       </styles.Filters>
       <styles.PieCharts>
-        {dataCharts.stateChart ? (
-          <div>
-            <Pie
-              data={{
-                labels: dataCharts.stateChart?.labels,
-                datasets: [
-                  {
-                    data: dataCharts.stateChart.values,
-                    backgroundColor: dataCharts.stateChart.color.map((h) => `${h}50`),
-                    borderColor: dataCharts.stateChart.color,
-                    borderWidth: 3,
-                  },
-                ],
-              }}
-              options={GameStateOptions}
-            />
-          </div>
-        ) : undefined}
-        {dataCharts.tagChart ? (
-          <div>
-            <Pie
-              data={{
-                labels: dataCharts.tagChart?.labels,
-                datasets: [
-                  {
-                    data: dataCharts.tagChart.values,
-                    backgroundColor: dataCharts.tagChart.color.map((c) => `${c}50`),
-                    borderColor: dataCharts.tagChart.color,
-                    borderWidth: 3,
-                  },
-                ],
-              }}
-              options={GameTagsOptions}
-            />
-          </div>
-        ) : undefined}
+        <Card>
+          {dataCharts.stateChart ? (
+            <div>
+              <Pie
+                data={{
+                  labels: dataCharts.stateChart?.labels,
+                  datasets: [
+                    {
+                      data: dataCharts.stateChart.values,
+                      backgroundColor: dataCharts.stateChart.color.map((h) => `${h}50`),
+                      borderColor: dataCharts.stateChart.color,
+                      borderWidth: 3,
+                    },
+                  ],
+                }}
+                options={GameStateOptions}
+              />
+            </div>
+          ) : undefined}
+        </Card>
+        <Card>
+          {dataCharts.tagChart ? (
+            <div>
+              <Pie
+                data={{
+                  labels: dataCharts.tagChart?.labels,
+                  datasets: [
+                    {
+                      data: dataCharts.tagChart.values,
+                      backgroundColor: dataCharts.tagChart.color.map((c) => `${c}50`),
+                      borderColor: dataCharts.tagChart.color,
+                      borderWidth: 3,
+                    },
+                  ],
+                }}
+                options={GameTagsOptions}
+              />
+            </div>
+          ) : undefined}
+        </Card>
       </styles.PieCharts>
       <styles.LineChart>
-        {dataCharts.hourChart ? <Line
-            datasetIdKey='id'
-            data={{
-              labels: dataCharts.hourChart.labels,
-              datasets: [
-                {
-                  
-                  data: dataCharts.hourChart.values,
-                  fill: true,
-                  borderColor: "#8F8",
-                  cubicInterpolationMode: "monotone",
-                }
-              ]
-            }}
-            options={HoursPlayedOptions}
-          /> : undefined }
+        <Card>
+          {dataCharts.hourChart ? <Line
+              datasetIdKey='id'
+              data={{
+                labels: dataCharts.hourChart.labels,
+                datasets: [
+                  {
+                    
+                    data: dataCharts.hourChart.values,
+                    fill: true,
+                    borderColor: "#8F8",
+                    cubicInterpolationMode: "monotone",
+                  }
+                ]
+              }}
+              options={HoursPlayedOptions}
+            /> : undefined }
+          </Card>
       </styles.LineChart>
     </FlexSection>
   )

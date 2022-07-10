@@ -7,6 +7,7 @@ export const FilterContainer = styled.div`
 export const TableContainer = styled.div`
   //display: grid;
   //grid-template-columns: repeat(8, 1fr);
+  && {
     border-radius: 8px;
     td.ant-table-column-sort {
       background-color: inherit;
@@ -29,6 +30,12 @@ export const TableContainer = styled.div`
       &:before {
         content: unset !important; //idk how to be more specific so ant don't override this
       }
+      &:first-child {
+        border-top-left-radius: 8px;
+      }
+      &:last-child {
+        border-top-right-radius: 8px;
+      }
     }
     .ant-table-tbody > tr {
       color: #eee;
@@ -39,18 +46,17 @@ export const TableContainer = styled.div`
       > td {
         border: none;
         background-color: unset;
-        &:first-child {
-          border-top-left-radius: 8px;
-          border-bottom-left-radius: 8px;
-        }
-        &:last-child {
-          border-top-right-radius: 8px;
-          border-bottom-right-radius: 8px;
+      }
+      &:last-child {
+        > td {
+          &:first-child {
+            border-bottom-left-radius: 8px;
+          }
+          &:last-child {
+            border-bottom-right-radius: 8px;
+          }
         }
       }
-    }
-    .ant-table-row:hover > td {
-      background: #181818 !important;
     }
     .ant-table-filter-column,
     .ant-table-column-sorters {
@@ -187,4 +193,5 @@ export const TableContainer = styled.div`
         }
       }
     }
+  }
 `

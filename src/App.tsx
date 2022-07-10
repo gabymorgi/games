@@ -1,6 +1,4 @@
 import "antd/dist/antd.css";
-import { Divider } from "antd";
-import { GameTag } from "./data";
 import { useMemo } from "react";
 import { Tags } from "./components/Tags";
 import { State } from "./components/State";
@@ -9,26 +7,17 @@ import { format } from "date-fns";
 import { Score, ScoreHeader } from "./components/Score";
 import GlobalStyles from "./styles/GlobalStyles";
 import { ChartComponent } from "./components/Chart";
-import Table, {
-  paginationToQuery,
-  sorterToQuery,
-  TableFiltersType,
-  TablePaginationType,
-  TableSorterType,
-} from "./ui/Table";
-import { useQuery, FiltersI } from "./back/dataQuery";
-import React from "react";
+import Table from "./ui/Table";
+import { useQuery, FiltersI, SorterI } from "./back/dataQuery";
 import { Filters } from "./components/Filters";
-
-const gameTags = Object.keys(GameTag)
-  .filter((key) => !isNaN(Number(key)))
-  .map((key) => ({ label: GameTag[Number(key)], value: key }));
-const sasdf = { type: "checkbox", options: gameTags };
+import { FlexSection } from "./ui/Layout";
 
 function App() {
-  const { data, dataLength, rawData, refetch } = useQuery({
-    first: 48,
-    orderBy: "end_desc",
+  const { data, rawData, refetch } = useQuery({
+    sorter: {
+      by: "end",
+      direction: "desc",
+    },
   });
 
   const dataSource = useMemo(() => {
@@ -55,59 +44,60 @@ function App() {
 
   const handleFiltersChange = (
     filters?: FiltersI,
-    sorter?: string,
+    sorter?: SorterI,
   ) => {
     console.log(filters, sorter);
     refetch({
       filters: filters,
-      orderBy: sorter,
+      sorter: sorter,
     });
   };
 
   return (
     <>
       <GlobalStyles />
-      <ChartComponent data={rawData} />
-      <Divider style={{ borderColor: 'white' }} />
-      <Filters onFiltersChance={handleFiltersChange} style={{ marginBottom: '24px' }} />
-      <Table
-        dataSource={dataSource}
-        rowKey="name"
-        columns={[
-          {
-            title: "Name",
-            dataIndex: "name",
-          },
-          {
-            title: "Start",
-            dataIndex: "start",
-          },
-          {
-            title: "End",
-            dataIndex: "end",
-          },
-          {
-            title: "State",
-            dataIndex: "state",
-          },
-          {
-            title: "Hours",
-            dataIndex: "hours",
-          },
-          {
-            title: "Achievements",
-            dataIndex: "achievements",
-          },
-          {
-            title: "Tags",
-            dataIndex: "tags",
-          },
-          {
-            title: <ScoreHeader />,
-            dataIndex: "score",
-          },
-        ]}
-      />
+      <FlexSection direction="column">
+        <ChartComponent data={rawData} />
+        <Filters onFiltersChance={handleFiltersChange} />
+        <Table
+          dataSource={dataSource}
+          rowKey="name"
+          columns={[
+            {
+              title: "Name",
+              dataIndex: "name",
+            },
+            {
+              title: "Start",
+              dataIndex: "start",
+            },
+            {
+              title: "End",
+              dataIndex: "end",
+            },
+            {
+              title: "State",
+              dataIndex: "state",
+            },
+            {
+              title: "Hours",
+              dataIndex: "hours",
+            },
+            {
+              title: "Achievements",
+              dataIndex: "achievements",
+            },
+            {
+              title: "Tags",
+              dataIndex: "tags",
+            },
+            {
+              title: <ScoreHeader />,
+              dataIndex: "score",
+            },
+          ]}
+        />
+      </FlexSection>
     </>
   );
 }

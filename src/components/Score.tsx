@@ -1,10 +1,19 @@
 import { Tooltip } from "antd";
 import styled from "styled-components";
 import { ScoreI } from "../data";
-import Icon from '@mdi/react'
-import { DislikeFilled, LikeFilled } from "@ant-design/icons";
-import { isDesktop, isMobile } from "../styles/Resolutions";
-import { mdiCup, mdiBookOpenPageVariant, mdiChemicalWeapon, mdiRobotAngry, mdiGoogleController, mdiInstagram, mdiMusicClefTreble, mdiOneUp, mdiSchool } from '@mdi/js';
+import Icon from "@mdi/react";
+import { DislikeFilled, InfoCircleFilled, LikeFilled } from "@ant-design/icons";
+import {
+  mdiCup,
+  mdiBookOpenPageVariant,
+  mdiChemicalWeapon,
+  mdiRobotAngry,
+  mdiGoogleController,
+  mdiInstagram,
+  mdiMusicClefTreble,
+  mdiOneUp,
+  mdiSchool,
+} from "@mdi/js";
 
 const StyledScoreHeader = styled.div`
   .title {
@@ -13,32 +22,23 @@ const StyledScoreHeader = styled.div`
   .group > * {
     text-transform: uppercase;
   }
-  @media (${isMobile}) {
-    .group {
-      padding-left: 8px;
-      line-height: 20px;
-    } 
+
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
   }
-  @media (${isDesktop}) {
-    .title {
+  .group {
+    display: flex;
+    > * {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: bold;
-    }
-    .group {
-      display: flex;
-      > * {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-left: 1px solid black;
-        border-right: 1px solid black;
-        width: 25px;
-        svg {
-          width: 21px !important;
-          height: unset !important;
-        }
+      width: 25px;
+      svg {
+        width: 21px !important;
+        height: unset !important;
       }
     }
   }
@@ -46,65 +46,67 @@ const StyledScoreHeader = styled.div`
 
 export const ScoreHeader = () => {
   /**
-   * content -> mdiCup 
+   * content -> mdiCup
    * lore -> book open page variant
-   * mechanics -> mdiChemicalWeapon  - mdiCubeUnfolded 
-   * bosses -> skull-scan - mdiRobotAngry 
-   * controls -> mdiGoogleController 
-   * music -> mdiMusicClefTreble 
-   * graphics -> mdiInstagram 
-   * extra -> mdiOneUp 
-   * total -> mdiSchool 
+   * mechanics -> mdiChemicalWeapon  - mdiCubeUnfolded
+   * bosses -> skull-scan - mdiRobotAngry
+   * controls -> mdiGoogleController
+   * music -> mdiMusicClefTreble
+   * graphics -> mdiInstagram
+   * extra -> mdiOneUp
+   * total -> mdiSchool
    */
   return (
     <StyledScoreHeader>
       <div className="title">Score</div>
       <div className="group">
-        <div><Icon path={mdiCup}
-          title="content"
-          size={1}
-          color="white"
-        /></div>
-        <div><Icon path={mdiBookOpenPageVariant}
-          title="Lore"
-          size={1}
-          color="white"
-        /></div>
-        <div><Icon path={mdiChemicalWeapon}
-          title="mechanics"
-          size={1}
-          color="white"
-        /></div>
-        <div><Icon path={mdiRobotAngry}
-          title="bosses"
-          size={1}
-          color="white"
-        /></div>
-        <div><Icon path={mdiGoogleController}
-          title="controls"
-          size={1}
-          color="white"
-        /></div>
-        <div><Icon path={mdiMusicClefTreble}
-          title="music"
-          size={1}
-          color="white"
-        /></div>
-        <div><Icon path={mdiInstagram}
-          title="graphics"
-          size={1}
-          color="white"
-        /></div>
-        <div><Icon path={mdiOneUp}
-          title="extra"
-          size={1}
-          color="white"
-        /></div>
-        <div><Icon path={mdiSchool}
-          title="total"
-          size={1}
-          color="white"
-        /></div>
+        <div>
+          <Icon path={mdiCup} title="content" size={1} color="white" />
+        </div>
+        <div>
+          <Icon
+            path={mdiBookOpenPageVariant}
+            title="Lore"
+            size={1}
+            color="white"
+          />
+        </div>
+        <div>
+          <Icon
+            path={mdiChemicalWeapon}
+            title="mechanics"
+            size={1}
+            color="white"
+          />
+        </div>
+        <div>
+          <Icon path={mdiRobotAngry} title="bosses" size={1} color="white" />
+        </div>
+        <div>
+          <Icon
+            path={mdiGoogleController}
+            title="controls"
+            size={1}
+            color="white"
+          />
+        </div>
+        <div>
+          <Icon
+            path={mdiMusicClefTreble}
+            title="music"
+            size={1}
+            color="white"
+          />
+        </div>
+        <div>
+          <Icon path={mdiInstagram} title="graphics" size={1} color="white" />
+        </div>
+        <div>
+          <Icon path={mdiOneUp} title="extra" size={1} color="white" />
+        </div>
+        <div>
+          <Icon path={mdiSchool} title="total" size={1} color="white" />
+        </div>
       </div>
     </StyledScoreHeader>
   );
@@ -113,10 +115,6 @@ export const ScoreHeader = () => {
 const StyledScore = styled.div`
   border-radius: 4px;
   display: flex;
-  @media (${isMobile}) {
-    flex-direction: column;
-    align-self: flex-end;
-  }
 `;
 
 const StyledScoreBar = styled.div<{ value?: number }>`
@@ -126,17 +124,13 @@ const StyledScoreBar = styled.div<{ value?: number }>`
   color: white;
   ${(props) => {
     if (props.value) {
-      const color = `hsl(${12 * props.value}, 100%, 30%)`;
+      const color = 12 * props.value;
       return `
-        background: ${color};
-        border-left: 1px solid ${color};
-        border-right: 1px solid ${color};
+        background: ${`hsl(${color}, 100%, 30%)`};
+        border: 1px solid ${`hsl(${color}, 100%, 40%)`};
       `;
     }
   }}
-  @media (${isMobile}) {
-    height: 20px;
-  }
 `;
 
 export const Score = (props: { score?: ScoreI }) => {
@@ -145,18 +139,18 @@ export const Score = (props: { score?: ScoreI }) => {
   }
   const extraTooltip = props.score.extra?.map((e, i) => (
     <div key={i}>
-      {e.bias > 0 ? <LikeFilled /> : <DislikeFilled />} {e.info}
+      {e.bias > 0 ? (
+        <LikeFilled />
+      ) : e.bias < 0 ? (
+        <DislikeFilled />
+      ) : (
+        <InfoCircleFilled />
+      )}{" "}
+      {e.info}
     </div>
   ));
   const extraBias =
     props.score.extra?.reduce((acum, e) => acum + e.bias, 0) || 0;
-  const count = Object.entries(props.score)
-    .filter(([k, v]) => k !== "extra")
-    .reduce((acum, [k, v]) => acum + (v ? 1 : 0), 0);
-  const sum = Object.entries(props.score)
-    .filter(([k, v]) => k !== "extra")
-    .reduce((acum, [k, v]) => acum + v, 0);
-  const total = sum / count + extraBias / 5;
 
   return (
     <StyledScore>
@@ -183,10 +177,14 @@ export const Score = (props: { score?: ScoreI }) => {
       </StyledScoreBar>
       <StyledScoreBar>
         {props.score.extra ? (
-          <Tooltip title={extraTooltip}>{extraBias > 0 ? "⟰" : "⟱"}</Tooltip>
+          <Tooltip title={extraTooltip}>
+            {extraBias > 0 ? "⟰" : extraBias < 0 ? "⟱" : "⨌"}
+          </Tooltip>
         ) : undefined}
       </StyledScoreBar>
-      <StyledScoreBar value={total}>{total.toFixed(1) || "-"}</StyledScoreBar>
+      <StyledScoreBar value={props.score.finalMark}>
+        {props.score.finalMark || "-"}
+      </StyledScoreBar>
     </StyledScore>
   );
 };

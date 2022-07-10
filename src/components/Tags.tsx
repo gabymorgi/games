@@ -14,29 +14,28 @@ const Tag = styled.div<{ color: string }>`
   padding-right: 8px;
 `;
 
-//https://mokole.com/palette.html
-//https://app.contrast-finder.org/result.html?foreground=%23FF0000&background=%23006400&ratio=7&isBackgroundTested=false&algo=HSV&lang=es
+//http://medialab.github.io/iwanthue/
 export const visuallyDistinctColors = [
-  "#2f4f4f",
-  "#2e8b57",
-  "#800000",
-  "#808000",
-  "#00008b",
-  "#ff0000",
-  "#ff8c00",
-  "#ffd700",
-  "#ba55d3",
-  "#00ff7f",
-  "#0000ff",
-  "#adff2f",
-  "#ff00ff",
-  "#1e90ff",
-  "#fa8072",
-  "#dda0dd",
-  "#ff1493",
-  "#87cefa",
-  "#7fffd4",
-  "#ffdead",
+  "#dbda64",
+  "#d655ea",
+  "#76e84a",
+  "#8a74f7",
+  "#dee837",
+  "#5e88f0",
+  "#a5cd36",
+  "#b57ae4",
+  "#56b333",
+  "#e464c6",
+  "#5fe385",
+  "#ed5789",
+  "#46e3ae",
+  "#ee5e41",
+  "#44ab57",
+  "#df852f",
+  "#aae572",
+  "#bf932f",
+  "#94a231",
+  "#e6bb34",
 ];
 
 export const tagToString: {
