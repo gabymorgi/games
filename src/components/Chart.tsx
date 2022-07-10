@@ -72,7 +72,10 @@ const HoursPlayedOptions = {
         font: {
           size: 14,
         },
-      }
+      },
+      grid: {
+        color: "#444",
+      },
     },
     x: {
       ticks: {
@@ -80,7 +83,10 @@ const HoursPlayedOptions = {
         font: {
           size: 14,
         },
-      }
+      },
+      grid: {
+        color: "#444",
+      },
     }
   }
 }
@@ -296,6 +302,7 @@ export const ChartComponent: React.FC<ChartProps> = (props) => {
                   }
                 ]
               }}
+              //change grid color to blue
               options={HoursPlayedOptions}
             /> : undefined }
           </Card>

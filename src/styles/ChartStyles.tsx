@@ -67,8 +67,8 @@ export const PieCharts = styled.div`
 export const LineChart = styled.div`
   width: 100%;
   min-height: 100px;
-  height: 25vh;
-  .ant-card-body, .ant-card-body > * {
+  height: 30vh;
+  > *, .ant-card-body, .ant-card-body > * {
     height: 100%;
   }
 `

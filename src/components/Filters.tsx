@@ -96,7 +96,7 @@ export const Filters = (props: FiltersProps) => {
               </Col>
               <Col xs={24} md={12}>
                 <Form.Item name="sortBy" label="Sort by">
-                  <Select>
+                  <Select allowClear>
                     <Select.Option value="name">Name</Select.Option>
                     <Select.Option value="start">Start</Select.Option>
                     <Select.Option value="end">End</Select.Option>
@@ -109,7 +109,7 @@ export const Filters = (props: FiltersProps) => {
               </Col>
               <Col xs={24} md={12}>
                 <Form.Item name="sortDirection" label="Order">
-                  <Select>
+                  <Select allowClear>
                     <Select.Option value="asc">Ascending</Select.Option>
                     <Select.Option value="desc">Descending</Select.Option>
                   </Select>
