@@ -1,10 +1,11 @@
-import { Select as AntSelect, SelectProps } from "antd";
-import { OptionProps } from "antd/lib/select";
-import styled from "styled-components";
-import colorPalette from "../styles/variables";
+import { Select as AntSelect, SelectProps } from 'antd'
+import { OptionProps } from 'antd/lib/select'
+import styled from 'styled-components'
+import colorPalette from '../styles/variables'
 
 const StyledSelect = styled(AntSelect)`
-  && {
+  &&,
+  &.ant-select-status-error.ant-select:not(.ant-select-disabled):not(.ant-select-customize-input) {
     &:hover {
       .ant-select-selector {
         border-color: ${colorPalette.primaryBGActive};
@@ -12,9 +13,9 @@ const StyledSelect = styled(AntSelect)`
     }
     &.ant-select-multiple {
       .ant-select-selection-item {
-        background-color: #363;
-        border-color: #0f0;
-        color: #fff;
+        background-color: ${colorPalette.cardBG};
+        border-color: ${colorPalette.inputBorder};
+        color: ${colorPalette.inputText};
         border-radius: 20px;
       }
     }
@@ -33,7 +34,7 @@ const StyledSelect = styled(AntSelect)`
       background: transparent;
     }
   }
-` as typeof AntSelect;
+` as typeof AntSelect
 
 const DropDown = styled.div`
   background-color: ${colorPalette.cardBG};
@@ -50,10 +51,11 @@ const DropDown = styled.div`
     background-color: ${colorPalette.primaryBG};
   }
 
-  .ant-select-item-option-selected:not(.ant-select-item-option-disabled) .ant-select-item-option-state {
+  .ant-select-item-option-selected:not(.ant-select-item-option-disabled)
+    .ant-select-item-option-state {
     color: #fff;
   }
-`;
+`
 
 type SelectType = React.FC<SelectProps<any>> & {
   Option: React.FC<OptionProps>
@@ -62,12 +64,12 @@ type SelectType = React.FC<SelectProps<any>> & {
 const Select: SelectType = (props) => {
   return (
     <StyledSelect
-      dropdownRender={(menu) => <DropDown>{menu}</DropDown>}
+      dropdownRender={(menu: React.ReactNode) => <DropDown>{menu}</DropDown>}
       {...props}
     />
-  );
-};
+  )
+}
 
-Select.Option = AntSelect.Option;
+Select.Option = AntSelect.Option
 
-export default Select;
+export default Select

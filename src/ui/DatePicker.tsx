@@ -1,7 +1,9 @@
 import 'antd/lib/date-picker/style/index'
 
 import styled, { createGlobalStyle } from 'styled-components'
-import generatePicker, { PickerProps } from 'antd/lib/date-picker/generatePicker'
+import generatePicker, {
+  PickerProps,
+} from 'antd/lib/date-picker/generatePicker'
 
 import dateFnsGenerateConfig from './DatePicker.config'
 import colorPalette from '../styles/variables'
@@ -11,15 +13,16 @@ const AntDatePicker = generatePicker<Date>(dateFnsGenerateConfig)
 const StyledDatePicker = styled(AntDatePicker)`
   && {
     width: 100%;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     background-color: ${colorPalette.inputBG};
     border-color: ${colorPalette.inputBorder};
-    
-    &:hover, &.ant-picker-focused {
+
+    &:hover,
+    &.ant-picker-focused {
       border-color: ${colorPalette.primaryBorderActive};
     }
-    
+
     .ant-picker-input > input {
       color: ${colorPalette.inputText};
     }

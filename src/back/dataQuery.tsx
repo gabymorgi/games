@@ -1,6 +1,61 @@
-import { isAfter, isBefore, parseISO } from "date-fns";
-import { useMemo, useState } from "react";
-import { data as rawData, GameState, GameTag, ScoreI } from "../data";
+import { addDoc, collection, deleteDoc, doc, getDocs, UpdateData, updateDoc } from "firebase/firestore";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { db } from "./firebase";
+import { filter, GameCollectionItem, gameToFirebaseItem, sort } from "./helpers";
+
+export enum GameTag {
+  Action = 'Action',
+  Board = 'Board',
+  Collectathon = 'Collectathon',
+  Cooperative = 'Cooperative',
+  Exploration = 'Exploration',
+  Idle = 'Idle',
+  Horror = 'Horror',
+  Metroidvania = 'Metroidvania',
+  MuchoTexto = 'MuchoTexto',
+  Platformer = 'Platformer',
+  Precision = 'Precision',
+  Programing = 'Programing',
+  PointAndClick = 'PointAndClick',
+  Puzzles = 'Puzzles',
+  Roguelike = 'Roguelike',
+  RPG = 'RPG',
+  Rythm = 'Rythm',
+  TowerDefense = 'TowerDefense',
+  TurnBased = 'TurnBased',
+}
+
+export enum GameState {
+  Banned = 'Banned',
+  Dropped = 'Dropped',
+  Playing = 'Playing',
+  Won = 'Won',
+  Completed = 'Completed',
+  Achievements = 'Achievements',
+}
+
+export const stateOrder: {
+  [key in GameState]: number
+} = {
+  [GameState.Banned]: 0,
+  [GameState.Dropped]: 1,
+  [GameState.Playing]: 2,
+  [GameState.Won]: 3,
+  [GameState.Completed]: 4,
+  [GameState.Achievements]: 5
+}
+
+export interface ScoreI {
+  content?: number;
+  lore?: number;
+  mechanics?: number;
+  bosses?: number;
+  controls?: number;
+  music?: number;
+  graphics?: number;
+  extra?: Array<{ bias: number; info: string }>;
+  finalMark: number;
+}
 
 export interface FiltersI {
   name?: string;
@@ -22,7 +77,7 @@ export interface variablesI {
   sorter?: SorterI;
 }
 
-export interface ParsedDataI {
+export interface GameWithoutId {
   name: string;
   start: Date;
   tags: Array<GameTag>;
@@ -30,103 +85,90 @@ export interface ParsedDataI {
   end: Date;
   hours?: number;
   achievements?: [number, number];
-  recomended?: "positive" | "negative" | "neutral";
   score?: ScoreI;
+}
+
+export interface GameI extends GameWithoutId {
+  id: string;
 }
 
 export function useQuery(initialVariables?: variablesI) {
   const [variables, setVariables] = useState<variablesI | undefined>(
     initialVariables
   );
-
-  const parsedData: ParsedDataI[] = useMemo(() => {
-    return rawData.map((game) => ({
-      name: game.name,
-      start: parseISO(game.start),
-      tags: game.tags,
-      state: game.state,
-      end: game.end ? parseISO(game.end) : parseISO(game.start),
-      hours: game.hours,
-      achievements: game.achievements,
-      score: game.score,
-    }));
+  const [loading, setLoading] = useState(false);
+  const [parsedData, setParsedData] = useState<GameI[]>();
+  const getGames = useCallback(async () => {
+      setLoading(true);
+      const data = await getDocs(collection(db, "games"));
+      setParsedData(data.docs.map((doc) => {
+        const data = doc.data()
+        return {
+          id: doc.id,
+          name: data.name,
+          start: data.start.toDate(),
+          tags: data.tags,
+          state: data.state,
+          end: data.end ? data.end.toDate() : data.start.toDate(),
+          hours: data.hours,
+          achievements: data.achievements,
+          score: data.score,
+        }
+      }));
+      setLoading(false);
   }, []);
 
+  useEffect(() => {
+    getGames();
+  }, []);
+
+  const createGame = async (game: GameWithoutId) => {
+    const doc = await addDoc(collection(db, "games"), gameToFirebaseItem(game));
+    setParsedData([...(parsedData || []), { ...game, id: doc.id }]);
+    return doc.id;
+  }
+
+  const updateGame = async (gameId: string, game: GameWithoutId) => {
+    const gameDoc = doc(db, "games", gameId)
+    await updateDoc(gameDoc, gameToFirebaseItem(game) as UpdateData<GameCollectionItem>);
+    setParsedData([...(parsedData || []).filter((g) => g.id !== gameId), { ...game, id: gameId }]);
+  }
+
+  const deleteGame = async (gameId: string) => {
+    const gameDoc = doc(db, "games", gameId)
+    await deleteDoc(gameDoc);
+    setParsedData([...(parsedData || []).filter((g) => g.id !== gameId)]);
+  }
+
   const [data, dataLength] = useMemo(() => {
-    let filteredData = parsedData;
+    if (!parsedData) return [undefined, 0];
+    let data = parsedData
     if (variables) {
       if (variables.filters) {
-        const { name, start, end, state, tags } = variables.filters;
-        filteredData = filteredData.filter((game) => {
-          if (name && !game.name.toLowerCase().includes(name.toLowerCase()))
-            return false;
-          if (start && end) {
-            //if game range is outside filter range, return false
-            if ((isAfter(game.start, end) || isBefore(game.end, start)))
-              return false;
-          } else if (start) {
-            //if game ends before filter start, return false
-            if (isBefore(game.end, start)) return false;
-          } else if (end) {
-            //if game starts after filter end, return false
-            if (isAfter(game.start, end)) return false;
-          }
-          if (state?.length && !state.includes(game.state)) return false;
-          if (tags?.length && !tags.some((tag) => game.tags.includes(tag)))
-            return false;
-          return true;
-        });
+        data = filter(data, variables.filters);
       }
-      console.log(variables.sorter)
       if (variables.sorter) {
-        const { by, direction } = variables.sorter;
-        filteredData = filteredData.sort((a, b) => {
-          switch (by) {
-            case "name":
-              if (direction === "asc") return a.name.localeCompare(b.name);
-              return b.name.localeCompare(a.name);
-            case "start":
-              if (direction === "asc")
-                return a.start.getTime() - b.start.getTime();
-              return b.start.getTime() - a.start.getTime();
-            case "end":
-              if (direction === "asc")
-                return (
-                  (a.end || a.start).getTime() - (b.end || b.start).getTime()
-                );
-              return (
-                (b.end || b.start).getTime() - (a.end || a.start).getTime()
-              );
-            case "state":
-              if (direction === "asc")
-                return a.state - b.state;
-              return b.state - a.state;
-            case "hours":
-              if (direction === "asc") return (a.hours || 0) - (b.hours || 0);
-              return (b.hours || 0) - (a.hours || 0);
-            case "achievements":
-              if (direction === "asc")
-                return (a.achievements ? a.achievements[0] / a.achievements[1] : 0) - (b.achievements ? b.achievements[0] / b.achievements[1] : 0);
-              return (b.achievements ? b.achievements[0] / b.achievements[1] : 0) - (a.achievements ? a.achievements[0] / a.achievements[1] : 0);
-            case "score":
-              if (direction === "asc")
-                return (a.score?.finalMark || 0) - (b.score?.finalMark || 0);
-              return (b.score?.finalMark || 0) - (a.score?.finalMark || 0);
-          }
-          return 0;
-        });
+        data = sort(data, variables.sorter);
       }
     }
-    const length = filteredData.length;
-    filteredData = filteredData.slice(
+    const length = data?.length;
+    data = data?.slice(
       variables?.skip || 0,
       variables?.first
         ? (variables.skip || 0) + variables.first
-        : filteredData.length
+        : data.length
     );
 
-    return [filteredData, length];
+    return [data, length];
   }, [parsedData, variables]);
 
-  return { rawData: parsedData, data, dataLength, refetch: setVariables };
+  return {
+    data,
+    dataLength,
+    loading,
+    refetch: setVariables,
+    createGame,
+    updateGame,
+    deleteGame,
+  };
 }

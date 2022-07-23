@@ -1,5 +1,5 @@
-import { Switch as AntSwitch } from "antd";
-import styled from "styled-components";
+import { Switch as AntSwitch } from 'antd'
+import styled from 'styled-components'
 
 export default styled(AntSwitch)`
   background-color: #030;
@@ -12,4 +12,4 @@ export default styled(AntSwitch)`
   .ant-switch-handle::before {
     background-color: #cfc;
   }
-`
+` as typeof AntSwitch

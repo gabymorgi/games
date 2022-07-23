@@ -79,7 +79,7 @@ const generateConfig: GenerateConfig<Date> = {
     getWeekFirstDay: () => {
       return 0
     },
-    getWeekFirstDate: (locale: any, date: Date) => {
+    getWeekFirstDate: (_, date: Date) => {
       return startOfWeek(date)
     },
     getShortWeekDays: () => {
@@ -88,16 +88,16 @@ const generateConfig: GenerateConfig<Date> = {
     getShortMonths: () => {
       return shortMonthsArray
     },
-    getWeek: (locale, date) => {
+    getWeek: (_, date) => {
       return getWeek(date)
     },
-    format: (locale, date, format) => {
+    format: (_, date, format) => {
       if (!isValid(date)) {
         return 'Invalid date'
       }
       return formatDate(date, localeParse(format))
     },
-    parse: (locale, text, formats) => {
+    parse: (_locale, text, formats) => {
       for (let i = 0; i < formats.length; i += 1) {
         const format = localeParse(formats[i])
         const formatText = text

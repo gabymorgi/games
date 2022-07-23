@@ -1,46 +1,37 @@
+import { ScoreI } from "./back/dataQuery";
+
 export enum GameTag {
-  Action,
-  Board,
-  Collectathon,
-  Cooperative,
-  Exploration,
-  Idle,
-  Horror,
-  Metroidvania,
-  MuchoTexto,
-  Platformer,
-  Precision,
-  Programing,
-  PointAndClick,
-  Puzzles,
-  Roguelike,
-  RPG,
-  Rythm,
-  TowerDefense,
-  TurnBased,
+  Action = 'Action',
+  Board = 'Board',
+  Collectathon = 'Collectathon',
+  Cooperative = 'Cooperative',
+  Exploration = 'Exploration',
+  Idle = 'Idle',
+  Horror = 'Horror',
+  Metroidvania = 'Metroidvania',
+  MuchoTexto = 'MuchoTexto',
+  Platformer = 'Platformer',
+  Precision = 'Precision',
+  Programing = 'Programing',
+  PointAndClick = 'PointAndClick',
+  Puzzles = 'Puzzles',
+  Roguelike = 'Roguelike',
+  RPG = 'RPG',
+  Rythm = 'Rythm',
+  TowerDefense = 'TowerDefense',
+  TurnBased = 'TurnBased',
 }
+
 export enum GameState {
-  Banned,
-  Dropped,
-  Playing,
-  Won,
-  Completed,
-  Achievements,
+  Banned = 'Banned',
+  Dropped = 'Dropped',
+  Playing = 'Playing',
+  Won = 'Won',
+  Completed = 'Completed',
+  Achievements = 'Achievements',
 }
 
-export interface ScoreI {
-  content?: number;
-  lore?: number;
-  mechanics?: number;
-  bosses?: number;
-  controls?: number;
-  music?: number;
-  graphics?: number;
-  extra?: Array<{ bias: number; info: string }>;
-  finalMark: number;
-}
-
-export interface GameI {
+interface GameDataI {
   name: string;
   start: string;
   tags: Array<GameTag>;
@@ -51,7 +42,7 @@ export interface GameI {
   score?: ScoreI;
 }
 
-export const data: Array<GameI> = [
+export const data: Array<GameDataI> = [
   {
     name: "Shantae and the Seven Sirens",
     start: "2022-07-03",
@@ -1960,13 +1951,6 @@ export const data: Array<GameI> = [
     },
   },
   {
-    name: "The dream machine",
-    start: "2018-06-16",
-    achievements: [0, 46],
-    state: GameState.Dropped,
-    tags: [GameTag.PointAndClick],
-  },
-  {
     name: "Crypt of the necrodancer",
     start: "2018-06-01",
     end: "2018-10-30",
@@ -2800,7 +2784,7 @@ export const data: Array<GameI> = [
     tags: [GameTag.Puzzles],
   },
   {
-    name: "Portal Stories:Mel",
+    name: "Tametsi",
     start: "2021-11-13",
     hours: 78.7,
     achievements: [17, 19],

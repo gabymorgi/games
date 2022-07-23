@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled from 'styled-components'
+import colorPalette, { layout } from './variables'
 
 export const FilterContainer = styled.div`
   padding: 8px;
@@ -15,7 +16,8 @@ export const TableContainer = styled.div`
     .ant-table {
       color: white;
       background-color: black;
-      border-radius: 4px;
+      border: 1px solid ${colorPalette.cardBorder};
+      border-radius: ${layout.borderRadius};
       font-size: 14px;
     }
     .ant-table-thead > tr > th {
@@ -75,7 +77,8 @@ export const TableContainer = styled.div`
       .ant-table-column-sorter {
         color: #696;
 
-        .ant-table-column-sorter-up.active, .ant-table-column-sorter-down.active {
+        .ant-table-column-sorter-up.active,
+        .ant-table-column-sorter-down.active {
           color: #cfc;
         }
       }
@@ -95,7 +98,7 @@ export const TableContainer = styled.div`
           border-color: #363;
           > a {
             padding: 0;
-            color: #CFC;
+            color: #cfc;
           }
           &:hover {
             background: #9c9;
@@ -103,7 +106,7 @@ export const TableContainer = styled.div`
               color: #363;
             }
           }
-    
+
           &:active {
             background: #cfc;
             > a {
@@ -111,7 +114,6 @@ export const TableContainer = styled.div`
             }
           }
         }
-
       }
       .ant-pagination-item-active {
         background: #cfc;
@@ -127,16 +129,21 @@ export const TableContainer = styled.div`
         align-items: center;
         justify-content: center;
       }
-      .ant-pagination-prev, .ant-pagination-next, .ant-pagination-jump-next, .ant-pagination-jump-prev {
+      .ant-pagination-prev,
+      .ant-pagination-next,
+      .ant-pagination-jump-next,
+      .ant-pagination-jump-prev {
         margin: 0 4px;
-        button, .ant-pagination-item-container {
+        button,
+        .ant-pagination-item-container {
           background-color: #696;
           border-color: #363;
-          color: #CFC;
+          color: #cfc;
           font-size: 20px;
 
-          .ant-pagination-item-link-icon, .ant-pagination-item-ellipsis {
-            color: #CFC;
+          .ant-pagination-item-link-icon,
+          .ant-pagination-item-ellipsis {
+            color: #cfc;
           }
         }
       }
@@ -173,9 +180,10 @@ export const TableContainer = styled.div`
 
     .ant-pagination-options {
       .ant-select {
-        .ant-select-selector, .ant-select-arrow {
+        .ant-select-selector,
+        .ant-select-arrow {
           background-color: #696;
-          color: #CFC;
+          color: #cfc;
         }
 
         .ant-select-dropdown,
